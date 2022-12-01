@@ -30,7 +30,7 @@ import subprocess
 from networks.ofa_mbv3_my import OFAMobileNetV3My
 
 # NAT_PATH = '/export/scratch3/aleksand/nsganetv2'
-NAT_PATH = '/projects/0/einf2071/nsganetv2'
+NAT_PATH = '/scratch/bf996/encas'
 NAT_LOGS_PATH = os.path.join(NAT_PATH, 'logs')
 NAT_DATA_PATH = os.path.join(NAT_PATH, 'data')
 

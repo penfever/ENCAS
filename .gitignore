@@ -11,6 +11,7 @@ ipynb/
 .DS_Store
 subnets/
 data/
+logs/
 search-*/
 sample_run/
 # Distribution / packaging
