@@ -103,15 +103,15 @@ class ImagenetDataProvider(DataProvider):
         raise ValueError('unable to download %s' % self.name())
     
     def train_dataset(self, _transforms):
-        dataset = datasets.ImageFolder(os.path.join(self.save_path, 'train_part'), _transforms)
+        dataset = datasets.ImageFolder(os.path.join(utils.IN1K_PATH, 'train'), _transforms)
         return dataset
 
     def val_dataset(self, _transforms):
-        dataset = datasets.ImageFolder(os.path.join(self.save_path, 'imagenetv2_all'), _transforms)
+        dataset = datasets.ImageFolder(utils.V2_PATH, _transforms)
         return dataset
     
     def test_dataset(self, _transforms):
-        dataset = datasets.ImageFolder(os.path.join(self.save_path, 'val'), _transforms)
+        dataset = datasets.ImageFolder(os.path.join(utils.IN1K_PATH, 'val'), _transforms)
         return dataset
     
     @property

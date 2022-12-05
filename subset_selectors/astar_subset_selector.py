@@ -3,13 +3,13 @@ from pymoo.algorithms.nsga3 import ReferenceDirectionSurvival, get_extreme_point
     associate_to_niches, calc_niche_count, niching
 from pymoo.factory import get_reference_directions
 from pymoo.util.nds.non_dominated_sorting import NonDominatedSorting
-
+from scipy.spatial import Delaunay, ConvexHull
 from subset_selectors.base_subset_selector import BaseSubsetSelector
 from matplotlib import pyplot as plt
 
-class ReferenceBasedSubsetSelector(BaseSubsetSelector):
+class MHASubsetSelector(BaseSubsetSelector):
     '''
-    same as in nsga3
+    Multi-heuristic A* algorithm
     '''
     def __init__(self, n_select, **kwargs):
         super().__init__()
@@ -47,7 +47,10 @@ class ReferenceDirectionSurvivalMy(ReferenceDirectionSurvival):
         self.worst_point = np.full(ref_dirs.shape[1], -np.inf)
 
     def _do(self, problem, objs, n_survive, D=None, **kwargs):
+        #Number of archs to examine
         n_total = objs.shape[0]
+        assert n_survive > len(objs[0]), "This algorithm requires that the number of archs to survive be at least the number of objectives"
+        #initialize all selections to false
         indices_selected = np.array([False] * n_total)
 
         # find or usually update the new ideal point - from feasible solutions
@@ -57,6 +60,7 @@ class ReferenceDirectionSurvivalMy(ReferenceDirectionSurvival):
         # calculate the fronts of the population
         fronts, rank = NonDominatedSorting().do(objs, return_rank=True, n_stop_if_ranked=n_survive)
         non_dominated, last_front = fronts[0], fronts[-1]
+        print(f"non dominated is {non_dominated}, number of fronts is {len(fronts)}")
 
         # find the extreme points for normalization
         self.extreme_points = get_extreme_points_c(objs[non_dominated, :], self.ideal_point,
@@ -69,10 +73,15 @@ class ReferenceDirectionSurvivalMy(ReferenceDirectionSurvival):
         self.nadir_point = get_nadir_point(self.extreme_points, self.ideal_point, self.worst_point,
                                            worst_of_population, worst_of_front)
 
+        print(f"ideal point is {self.ideal_point}, nadir is {self.nadir_point}, worst is {self.worst_point}")
+
         #  consider only the population until we come to the splitting front
         I = np.concatenate(fronts)
+        print("concat result: ")
+        print(I)
         indices_selected[I] = True
-
+        print("indices selected after concat")
+        print(indices_selected)
         # update the front indices for the current population
         new_idx_to_old_idx = {}
         counter = 0
@@ -83,29 +92,41 @@ class ReferenceDirectionSurvivalMy(ReferenceDirectionSurvival):
                 counter += 1
         last_front = fronts[-1]
 
-        # associate individuals to niches
-        niche_of_individuals, dist_to_niche, dist_matrix = \
-            associate_to_niches(objs[indices_selected], self.ref_dirs, self.ideal_point, self.nadir_point)
-
+        # # associate individuals to niches
+        # niche_of_individuals, dist_to_niche, dist_matrix = \
+        #     associate_to_niches(objs[indices_selected], self.ref_dirs, self.ideal_point, self.nadir_point)
+        
         # if we need to select individuals to survive
+        #TODO: Need to deal with the case where I is empty (or not a hull)
         if len(objs[indices_selected]) > n_survive:
-
-            # if there is only one front
+            objs_to_examine = np.copy(objs[indices_selected])
+            #Shift negative to 0
+            objs_to_examine = objs_to_examine + objs_to_examine.min(axis=0)
+            #Normalize to 1
+            objs_to_examine = objs_to_examine / objs_to_examine.max(axis=0)
             if len(fronts) == 1:
-                n_remaining = n_survive
-                until_last_front = np.array([], dtype=int)
-                niche_count = np.zeros(len(self.ref_dirs), dtype=int)
-
-            # if some individuals already survived
+                until_last_front = np.argmin(objs_to_examine, axis=0) #Assuming minimization objective
             else:
                 until_last_front = np.concatenate(fronts[:-1])
-                niche_count = calc_niche_count(len(self.ref_dirs), niche_of_individuals[until_last_front])
-                n_remaining = n_survive - len(until_last_front)
+            until_last_front = np.unique(until_last_front)
+            n_remaining = n_survive - len(until_last_front)
+            until_last_front_list = until_last_front.tolist()
+            print("n remaining is {}".format(n_remaining))
+            dists = []
+            for j in range(len(objs_to_examine)):
+                if j in until_last_front_list:
+                    continue
+                d_obj = []
+                for i in range(len(until_last_front)):
+                    d_obj.append(np.dot(until_last_front[i], objs_to_examine[j]))
+                dists.append(np.min(d_obj))
+            print("dists is {}".format(dists))
+            dists = np.array(dists)
+            survivors = np.concatenate((until_last_front, dists.argsort()[:n_remaining]))
+            print("Survivors are {}".format(survivors))
+            # Get euclidean distances from each point in objs_to_examine to the points already in the set
+            # add n_remaining "closest" points 
 
-            S = niching(objs[indices_selected][last_front], n_remaining, niche_count, niche_of_individuals[last_front],
-                        dist_to_niche[last_front])
-
-            survivors = np.concatenate((until_last_front, last_front[S].tolist()))
 
             # only survivors need to remain active
             indices_selected[:] = False
@@ -114,11 +135,14 @@ class ReferenceDirectionSurvivalMy(ReferenceDirectionSurvival):
         return indices_selected
 
 if __name__ == '__main__':
-    gss = ReferenceBasedSubsetSelector(5, n_objs=2)
+    gss = MHASubsetSelector(3, n_objs=2)
     objs_cur = np.array([[0, 0], [0.2, 1.5], [0.9, 0],
                          [1.1, 0.2], [1.34, .001], [.001, 1.34],
                          [1, 2], [2, 4], [3, 3],
+                         [-1, -1], [-2, -1], [1, -3],
+                         [4, 3], [-2, 2], [1, -2],
                          [-0.5, -0.5], [0.5, 0.7], [0.7, 0.5]])
+    # objs_cur = np.random.rand(500, 4)
     plt.scatter(objs_cur[:, 0], objs_cur[:, 1])
     idx = gss.select(None, objs_cur)
     print("Indices selected:")

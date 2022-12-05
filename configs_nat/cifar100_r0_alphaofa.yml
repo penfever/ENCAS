@@ -1,4 +1,4 @@
-data: /projects/0/einf2071/data/CIFAR100/
+data: /scratch/bf996/encas/data/CIFAR100/
 dataset: cifar100
 zeroeth_gpu: 0
 gpu: 1
@@ -11,7 +11,7 @@ n_gpus: 2
 n_iter: 300
 n_surrogate_evals: 10000
 n_workers: 8
-path_logs: /projects/0/einf2071/nsganetv2/logs/
+path_logs: /scratch/bf996/encas/nsganetv2/logs/
 predictor: rbf_ensemble_per_ensemble_member_cascade_combo
 random_seed: 1723
 seed_offset: 0

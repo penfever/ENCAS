@@ -28,14 +28,19 @@ def get_val_and_test_labels(nat_config_name):
     return lbls_val, lbls_test
 
 if __name__ == '__main__':
+    print("Getting CIFAR-10 dataset and saving labels ...")
     lbls_val, lbls_test = get_val_and_test_labels('cifar10_r0_ofa10_sep.yml')
     np.save(os.path.join(NAT_DATA_PATH, 'labels_cifar10_val10000'), lbls_val)
     np.save(os.path.join(NAT_DATA_PATH, 'labels_cifar10_test'), lbls_test)
 
+    print("Getting CIFAR-100 dataset and saving labels ...")
     lbls_val, lbls_test = get_val_and_test_labels('cifar100_r0_ofa10_sep.yml')
     np.save(os.path.join(NAT_DATA_PATH, 'labels_cifar100_val10000'), lbls_val)
     np.save(os.path.join(NAT_DATA_PATH, 'labels_cifar100_test'), lbls_test)
 
+    print("Locating ImageNet and saving labels ...")
     lbls_val, lbls_test = get_val_and_test_labels('imagenet_r0_ofa10_sep.yml')
     np.save(os.path.join(NAT_DATA_PATH, 'labels_imagenet_val20683'), lbls_val)
     np.save(os.path.join(NAT_DATA_PATH, 'labels_imagenet_test'), lbls_test)
+
+    print("Done.")

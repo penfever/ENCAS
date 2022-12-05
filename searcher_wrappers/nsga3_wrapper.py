@@ -31,7 +31,7 @@ class Nsga3Wrapper(BaseSearcherWrapper):
         self.if_add_archive_to_candidates = if_add_archive_to_candidates
         self.path_logs = path_logs
         self.ref_dirs = get_reference_directions("riesz", self.n_obj, 100)
-        print(f'{self.ref_dirs.shape=}')
+        print(f'In nsga3 wrapper, ref_directions shape is {self.ref_dirs.shape=}')
 
 
     def search(self, archive, predictor, iter_current, **kwargs):

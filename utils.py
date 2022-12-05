@@ -33,6 +33,8 @@ from networks.ofa_mbv3_my import OFAMobileNetV3My
 NAT_PATH = '/scratch/bf996/encas'
 NAT_LOGS_PATH = os.path.join(NAT_PATH, 'logs')
 NAT_DATA_PATH = os.path.join(NAT_PATH, 'data')
+IN1K_PATH = '/imagenet'
+V2_PATH = '/scratch/bf996/datasets/imagenetv2_all'
 
 _alphabets = ['full_nat', 'full_nat_w12', 'full_nat_w10', 'full_alphanet', 'full_nat_proxyless',
               'full_alphanet_cascade2', 'full_nat_w12_cascade2',

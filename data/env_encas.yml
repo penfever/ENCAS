@@ -6,7 +6,6 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.8
   - _libgcc_mutex=0.1=conda_forge
   - _openmp_mutex=4.5=1_llvm
   - _pytorch_select=0.2=gpu_0
@@ -114,7 +113,7 @@ dependencies:
   - pyparsing=2.4.7=pyhd3eb1b0_0
   - pyqt=5.9.2=py38h05f1152_4
   - pysocks=1.7.1=py38h06a4308_0
-  - python=3.8.8=hdb3f193_5
+  - python=3.8
   - python-dateutil=2.8.1=pyhd3eb1b0_0
   - python_abi=3.8=1_cp38
   - pytorch=1.10.0=py3.8_cuda11.3_cudnn8.2.0_0

@@ -1,6 +1,7 @@
 import itertools
 import os
 import time
+from datetime import datetime
 from concurrent.futures.process import ProcessPoolExecutor
 from pathlib import Path
 
@@ -221,9 +222,17 @@ class NAT:
     def search(self):
         worst_top1_err, worst_flops = 40, 4000
         ref_pt = np.array([worst_top1_err, worst_flops])
+
+        # create_or_restore_archive triggers the entire first iteration of the algorithm;
+        # the supernetwork is trained, and the weights are fixed
+        # the archive is initialized with the first batch of models to be evaluated
         archive, first_iteration = self.create_or_restore_archive(ref_pt)
 
+        # for the remainder of the iterations, we loop over 'evolutions' of the supernetwork
+        # we run validation within those subnets, trying to find optimal architectures
+        # after each iteration, the archive is updated; new models are added and old ones are pruned
         for it in range(first_iteration, self.iterations + 1):
+            print("BEGIN: Iteration {} of {}".format(first_iteration + it, self.iterations + 1))
             archive, *_ = self.search_step(archive, it, ref_pt)
 
     def search_step(self, archive, it, ref_pt):
@@ -250,10 +259,11 @@ class NAT:
 
         hv = utils.compute_hypervolume(ref_pt, np.column_stack(list(zip(*archive))[1:3]))
         hv_candidates = utils.compute_hypervolume(ref_pt, np.column_stack(list(zip(*candidates_with_objs))[1:3]))
+        LOG_STR = str(datetime.now()) + 'iter_{}.stats'.format(it)
 
         print(f'\nIter {it}: hv = {hv:.2f}')
         print(f"fitting {self.predictor}: RMSE = {rmse:.4f}, Spearman's Rho = {rho:.4f}, Kendall’s Tau = {tau:.4f}")
-        with open(os.path.join(self.path_logs, 'iter_{}.stats'.format(it)), 'w') as handle:
+        with open(os.path.join(self.path_logs, LOG_STR), 'w') as handle:
             json.dump({'archive': archive, 'candidates': candidates_with_objs, 'hv': hv, 'hv_candidates': hv_candidates,
                        'surrogate': {'model': self.predictor, 'name': acc_predictor.name, 'winner': acc_predictor.name,
                            'rmse': rmse, 'rho': rho, 'tau': tau}}, handle)
@@ -262,6 +272,7 @@ class NAT:
         return archive, {'acc_val_max': get_metric_complement(np.min([x[1] for x in archive]))}
 
     def create_or_restore_archive(self, ref_pt):
+        print("Creating or restoring archive. \n")
         if self.resume:
             # loads the full archive, not just the candidates of the latest iteration
             data = json.load(open(self.resume))
@@ -285,7 +296,8 @@ class NAT:
                 st = time.time()
                 self._train(arch_doe, -1, n_epochs=self.n_warmup_epochs, if_warmup=True)
                 ed = time.time()
-                print(f'Train time = {ed - st}')
+                et = (ed - st) % 60
+                print(f'Train time = {et} mins')
                 self.lock.release()
 
             objs_evaluated = self.train_and_evaluate(arch_doe, 0)
@@ -294,8 +306,8 @@ class NAT:
                 archive.append(member)
 
             hv = utils.compute_hypervolume(ref_pt, np.column_stack(list(zip(*archive))[1:3]))
-
-            with open(os.path.join(self.path_logs, 'iter_0.stats'), 'w') as handle:
+            LOG_STR = str(datetime.now()) + "_iter_0.stats"
+            with open(os.path.join(self.path_logs, LOG_STR), 'w') as handle:
                 json.dump({'archive': archive, 'candidates': [], 'hv': hv, 'hv_candidates': hv,
                            'surrogate': {}}, handle)
             first_iteration = 1
@@ -305,7 +317,7 @@ class NAT:
         if 'rbf_ensemble_per_ensemble_member' not in self.predictor:
             inputs = np.array([self.search_space.encode(x[0]) for x in archive])
             targets = np.array([x[1] for x in archive])
-            print(len(inputs), len(inputs[0]))
+            print("# of val archs in inputs (training samples) is {}, alphabet length (dim) is {}".format(len(inputs), len(inputs[0])))
             assert len(inputs) > len(inputs[0]), '# of training samples have to be > # of dimensions'
             inputs_additional = {}
         else:
@@ -334,8 +346,7 @@ class NAT:
 
             inputs_additional['inputs_for_flops_alphabet'] = inputs_for_flops_alphabet
             inputs_additional['inputs_for_flops_alphabet_lb'] = inputs_for_flops_alphabet_lb
-
-            print(len(inputs), len(inputs[0]), len(inputs[0][0]))
+            print("# of val archs in inputs (training samples) is {}, max alphabet length (dim) is {}".format(len(inputs[0]), max([len(x) for x in inputs[0]])))
             assert len(inputs[0]) > max([len(x) for x in inputs[0]]), '# of training samples have to be > # of dimensions'
 
             if 'combo' in self.predictor:
@@ -354,6 +365,7 @@ class NAT:
             self.subset_selector.n_select = normal_n_select
             actual_inputs_for_fit = inputs[indices]
             targets = targets[indices]
+            print("In fit_surrogate, reproduce_nat: inputs for fit, targets are: \n")
             print(f'{actual_inputs_for_fit.shape=}, {targets.shape=}')
         else:
             actual_inputs_for_fit = inputs
@@ -366,6 +378,8 @@ class NAT:
             inputs = {'for_acc': inputs, 'for_flops': inputs_for_flops}
         # to calculate predictor correlation:
         predictions = acc_predictor.predict(inputs)
+        print("In fit_surrogate, Predictions of acc_predictor: type is {}".format(type(predictions)))
+        print("In fit_surrogate, Predictions of acc_predictor: size is {}".format(predictions.shape))
         return acc_predictor, predictions
 
     def surrogate_search(self, archive, predictor, it=0):
@@ -375,7 +389,8 @@ class NAT:
         st = time.time()
         genomes, objs = self.search_wrapper.search(archive, predictor, it, seed=seed_cur)
         ed = time.time()
-        print(f'Search time = {ed - st}')
+        et = (ed - st) % 60
+        print(f'Surrogate search + acc pred time = {et} mins')
 
         if self.if_check_duplicates:
             archive_genomes = [x[0] for x in archive]
@@ -389,7 +404,8 @@ class NAT:
         genomes_selected = genomes[not_duplicate][indices]
         objs_selected = objs[not_duplicate][indices]
         ed = time.time()
-        print(f'Select time = {ed - st}')
+        et = (ed - st) % 60
+        print(f'Surrogate selection time = {et} mins')
 
         genomes_selected, unique_idx = np.unique(genomes_selected, axis=0, return_index=True)
         objs_selected = objs_selected[unique_idx]
@@ -404,14 +420,16 @@ class NAT:
         st = time.time()
         self._train(archs, it, n_epochs=n_epochs, if_warmup=if_warmup)
         ed = time.time()
-        print(f'Train time = {ed - st}')
+        et = (ed - st) % 60
+        print(f'Total training time = {et} minutes \n')
 
         self.lock.release()
 
         st = time.time()
         eval_res = self._evaluate_model_list(archs)
         ed = time.time()
-        print(f'Eval time = {ed - st}')
+        et = (ed - st) % 60
+        print('Leaving eval loop. Total eval time = {} minutes \n'.format(et))
 
         gc.collect()
         torch.cuda.empty_cache()
@@ -455,7 +473,6 @@ class NAT:
                            self.train_criterion, self.get_scalar_from_accuracy, actual_logs_path,
                            self.supernet_paths[i], lambda_select_archs_per_engine[i], percent_train_per_engine[i],
                            self.store_checkpoint_freq, self.sec_obj, self.if_amp), f)
-
             future = thread_pool.submit(NAT._train_one_supernetwork_stateless, dump_path_train1)
             future.result()
 

@@ -8,7 +8,7 @@ from acc_predictor.rbf_ensemble import RBFEnsemble
 
 
 def get_acc_predictor(model, inputs, targets, alphabet, alphabet_lb, **kwargs):
-    ensemble_size = kwargs.get('ensemble_size', 500)
+    ensemble_size = kwargs.get('ensemble_size', 100)
 
     if model == 'rbf':
         predictor = RBF(alphabet=alphabet, alphabet_lb=alphabet_lb)
