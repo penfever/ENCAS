@@ -41,6 +41,7 @@ class MHASurvival():
         self.opt = None
         self.ideal_point = np.full(objs, np.inf)
         self.worst_point = np.full(objs, -np.inf)
+        self.BIG_NUMBER = 1e9
 
     def min_line_distance(self, P, tups):
         d = []
@@ -113,7 +114,8 @@ class MHASurvival():
             objs_to_examine = np.copy(objs[indices_selected])
             objs_to_examine = objs_to_examine + np.abs(objs_to_examine.min(axis=0))
             objs_to_examine = objs_to_examine / objs_to_examine.max(axis=0)
-
+            # print("objs num")
+            # print(len(objs_to_examine))
             #select fronts
             if len(fronts) == 1:
                 until_last_front = np.argmin(objs_to_examine, axis=0) #Assuming minimization objective
@@ -127,23 +129,30 @@ class MHASurvival():
             for j in range(len(objs_to_examine)):
                 d_obj = []
                 if j in until_last_front_list:
-                    dists.append(1e9)
+                    dists.append([self.BIG_NUMBER, self.BIG_NUMBER])
                     continue
-                for i in range(len(until_last_front)):
-                    # print("ulf, objs")
-                    # print(objs_to_examine[until_last_front[i]], objs_to_examine[j])
-                    d_obj.append(np.dot(objs_to_examine[until_last_front[i]], objs_to_examine[j]))
+                # for i in range(len(until_last_front)):
+                #     # print("ulf, objs")
+                #     # print(objs_to_examine[until_last_front[i]], objs_to_examine[j])
+                #     d_obj.append(np.dot(objs_to_examine[until_last_front[i]], objs_to_examine[j]))
                 # maximize distance between selected points (for a particular frontier, we seek diversity)
-                d = np.max(d_obj)
-                # minimize distance between selected points and frontier points  
-                # d = np.min(d_obj)
+                # d = np.nan_to_num(np.max(d_obj))
+                # minimize distance between selected points and frontier points
+                d = np.nan_to_num(np.dot(self.ideal_point, objs_to_examine[j]))
+                # d = np.nan_to_num(np.min(d_obj))
                 # minimize distance between each point and some edge on the frontier, constrained by d
-                h = np.min((self.min_line_distance(objs_to_examine[j], self.tups), d))
-                # h = (self.min_line_distance(objs_to_examine[j], self.tups))
+                # h = np.nan_to_num(np.min((self.min_line_distance(objs_to_examine[j], self.tups), d)))
+                h = np.nan_to_num((self.min_line_distance(objs_to_examine[j], self.tups)))
                 # print("Heuristic distance is {}".format(h))
-                dists.append(d + h)
-                # dists.append([d, h])
-            dists = np.array(dists)
+                # dists.append(d + h)
+                dists.append([d, h])
+            # dists = np.array(dists)
+            # Normalize d and h distances
+            # print(dists)
+            d_arr = np.array([d[0] for d in dists])
+            # print(len(dists), len(d_arr))
+            h_arr = np.array([d[1] for d in dists])
+            dists = (d_arr / d_arr.max(axis=0)) + (h_arr / h_arr.max(axis=0))
             survivors = np.concatenate((until_last_front, dists.argsort()[:n_remaining]))
             # print("Survivors are {}".format(survivors))
             # Get euclidean distances from each point in objs_to_examine to the points already in the set
