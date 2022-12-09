@@ -183,3 +183,15 @@ Indices selected:
 Vertices selected (by objectives): 
 [[-2. -1.]
  [ 1. -3.]]
+
+## Pathing for plotting
+
+nat_config_path = os.path.join(nsga_logs_path, experiment_path, 'config_msunas.yml')
+
+def swa_for_whole_experiment(experiment_name, iters, supernet_name_in, target_runs=None):
+    nsga_logs_path = utils.NAT_LOGS_PATH
+    experiment_path = os.path.join(nsga_logs_path, experiment_name)
+
+NAT_PATH = '/scratch/bf996/encas'
+NAT_LOGS_PATH = os.path.join(NAT_PATH, 'logs')
+NAT_DATA_PATH = os.path.join(NAT_PATH, 'data')

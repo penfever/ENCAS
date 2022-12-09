@@ -1,0 +1,1044 @@
++ module purge
+++ /share/apps/lmod/8.4.9/lmod/lmod/libexec/lmod bash purge
++ eval 'MODULEPATH=/share/apps/modulefiles;' export 'MODULEPATH;' '_ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXt9LG1wYXRoQT17Ii9zaGFyZS9hcHBzL21vZHVsZWZpbGVzIix9LH0=;' export '_ModuleTable001_;' '_ModuleTable_Sz_=1;' export '_ModuleTable_Sz_;'
+++ MODULEPATH=/share/apps/modulefiles
+++ export MODULEPATH
+++ _ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXt9LG1wYXRoQT17Ii9zaGFyZS9hcHBzL21vZHVsZWZpbGVzIix9LH0=
+++ export _ModuleTable001_
+++ _ModuleTable_Sz_=1
+++ export _ModuleTable_Sz_
+++ : -s sh
++ eval
++ echo encas-nat-astar
+encas-nat-astar
++ echo 0
+0
++ srun --cpu_bind=v --accel-bind=v /bin/bash /scratch/bf996/encas/script/run-singularity-encas-cuda.bash /bin/bash -c 'python nat_run_many.py --config configs_nat/cifar10_reproducenat_astar.yml'
+cpu-bind=MASK - ga024, task  0  0 [2434336]: mask 0xff000000000000000000ff0000000000 set
+"/bin/bash" "-c" "python nat_run_many.py --config configs_nat/cifar10_reproducenat_astar.yml"
+
+EXPERIMENT INFO: 
+
+cifar10_reproducenat_astar
+Distributed configuration: 
+zeroeth gpu, gpu, n_gpus
+0 0 1
+[{'experiment_name': '/scratch/bf996/encas/logs/nsganetv2/cifar10_reproducenat_astar/search_algo:nsga3!subset_selector:astar/0', 'resume': None, 'sec_obj': 'flops', 'iterations': 30, 'n_doe': 100, 'n_iter': 300, 'predictor': 'rbf_ensemble', 'data': '/scratch/bf996/datasets/cifar10/', 'dataset': 'cifar10', 'n_workers': 16, 'vld_size': 10000, 'total_size': None, 'trn_batch_size': 256, 'vld_batch_size': 256, 'n_epochs': 5, 'supernet_path': ['data/ofa/supernet_w1.0', 'data/ofa/supernet_w1.2'], 'search_algo': 'nsga3', 'subset_selector': 'astar', 'init_with_nd_front_size': 0, 'dont_check_duplicates': True, 'add_archive_to_candidates': True, 'sample_configs_to_train': True, 'random_seed': 1723, 'n_warmup_epochs': 0, 'path_logs': '/scratch/bf996/encas/logs/nsganetv2/', 'n_surrogate_evals': 10000, 'config_msunas_path': None, 'gomea_exe': '/scratch/bf996/MO_GOMEA/exes/MO_GOMEA_default_ndinit_lb_lessoutput_intsolution_dontcountcache_usepythonpath', 'alphabet': ['full_nat', 'full_nat'], 'search_space': 'reproduce_nat', 'store_checkpoint_freq': 1, 'init_lr': 0.01, 'ensemble_ss_names': ['ofa', 'ofa'], 'rbf_ensemble_size': 500, 'cutout_size': 56, 'label_smoothing': 0.0, 'if_amp': True, 'use_gradient_checkpointing': False, 'lr_schedule_type': 'cosine_nocycle', 'if_cutmix': False, 'weight_decay': 4e-05, 'if_center_crop': True, 'auto_augment': 'rand-m9-mstd0.5', 'resize_scale': 0.08, 'search_goal': 'ensemble', 'zeroeth_gpu': 0, 'gpu': 0, 'n_classes': 10, 'n_gpus': 1, 'seed_offset': 0, 'train_continuous': True, 'use_diversity_objective': False, 'n_runs': 1, 'init_with_nd_front': False, 'if_debug_run': False, 'if_create_unique_gpu_lock': False, 'if_single_gpu_mode': True, 'if_store': False, 'git_hash': '827ef869ab2e9b1c68b2e26d5ebaa0a3200675d3', 'algo_mods_all': [{'search_algo': 'nsga3', 'subset_selector': 'astar'}]}]
+Initializing GPU: 0
+Setting random seed to 1723
+self.path_logs='/scratch/bf996/encas/logs/nsganetv2/cifar10_reproducenat_astar/search_algo:nsga3!subset_selector:astar/0'
+supernet_paths=['data/ofa/supernet_w1.0', 'data/ofa/supernet_w1.2']
+Color jitter: None, resize_scale: 0.08, img_size: 256
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+In nsga3 wrapper, ref_directions shape is self.ref_dirs.shape=(100, 2)
+Creating or restoring archive. 
+
+Lock 23274365779296 acquired on /scratch/bf996/encas/logs/nsganetv2/cifar10_reproducenat_astar/gpu_0.lockpercent_w1_0=0.41
+Setting random seed to 1723
+device=device(type='cuda')
+SGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.01
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+Color jitter: None, resize_scale: 0.08, img_size: 256
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+
+Init dataloader seed: 2627969484
+Init dataloader seed: 2627969488
+Init dataloader seed: 2627969492
+Init dataloader seed: 2627969490
+Init dataloader seed: 2627969498
+Init dataloader seed: 2627969502
+Init dataloader seed: 2627969496
+Init dataloader seed: 2627969500
+Init dataloader seed: 2627969506
+Init dataloader seed: 2627969508
+Init dataloader seed: 2627969510
+Init dataloader seed: 2627969486
+Init dataloader seed: 2627969494
+Init dataloader seed: 2627969504
+Init dataloader seed: 2627969512
+Init dataloader seed: 2627969482
+Total training time = 37.80955123901367 minutes 
+
+Lock 23274365779296 released on /scratch/bf996/encas/logs/nsganetv2/cifar10_reproducenat_astar/gpu_0.lockSGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.009995734055077345
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+SGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.009991109375723532
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+started _evaluate_model
+Color jitter: None, resize_scale: 0.08, img_size: 256
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+sub_train_loader time = 0.8923435211181641
+Setting BN time = 41.02348446846008
+
+100 validations
+
+Leaving eval loop. Total eval time = 55.59013915061951 minutes 
+
+BEGIN: Iteration 2 of 31
+num of val archs in inputs (training samples) is 100, alphabet length (dim) is 22
+Selection complete: Selected 100 indices from 100 possibilities
+In fit_surrogate, reproduce_nat: inputs for fit, targets are: 
+
+actual_inputs_for_fit.shape=(100, 22), targets.shape=(100,)
+Constructing RBF ensemble surrogate model with sample size = 100, ensemble size = 500
+In fit_surrogate, Predictions of acc_predictor: type is <class 'numpy.ndarray'>
+In fit_surrogate, Predictions of acc_predictor: size is (100, 1)
+Setting random seed to 1724
+Fitness time = 13.868528604507446
+=======================================================
+n_gen |  n_eval |  n_nds  |     eps      |  indicator  
+=======================================================
+    1 |     100 |      10 |            - |            -
+Fitness time = 13.724656820297241
+    2 |     200 |      12 |  0.028267547 |            f
+Fitness time = 13.807249307632446
+    3 |     300 |      12 |  0.017068691 |            f
+Fitness time = 13.430031538009644
+    4 |     400 |       9 |  0.011628843 |            f
+Fitness time = 12.950634479522705
+    5 |     500 |      16 |  0.021609426 |            f
+Fitness time = 12.75064206123352
+    6 |     600 |      18 |  0.009709573 |            f
+Fitness time = 13.0582115650177
+    7 |     700 |      23 |  0.009271305 |            f
+Fitness time = 13.285481214523315
+    8 |     800 |      22 |  0.015296946 |            f
+Fitness time = 12.908574342727661
+    9 |     900 |      19 |  2.039280630 |        nadir
+Fitness time = 12.137573480606079
+   10 |    1000 |      29 |  0.026827659 |            f
+Fitness time = 12.174180030822754
+   11 |    1100 |      25 |  0.017852967 |        ideal
+Fitness time = 11.790587186813354
+   12 |    1200 |      21 |  0.015803224 |            f
+Fitness time = 11.451175928115845
+   13 |    1300 |      22 |  0.123422452 |        nadir
+Fitness time = 10.852900981903076
+   14 |    1400 |      25 |  0.009886169 |            f
+Fitness time = 10.941436529159546
+   15 |    1500 |      25 |  0.013211669 |            f
+Fitness time = 10.683202981948853
+   16 |    1600 |      26 |  0.009880277 |            f
+Fitness time = 10.819342613220215
+   17 |    1700 |      27 |  0.013531579 |            f
+Fitness time = 10.512432336807251
+   18 |    1800 |      27 |  0.004997827 |            f
+Fitness time = 10.838491678237915
+   19 |    1900 |      26 |  0.009256605 |        ideal
+Fitness time = 10.627373456954956
+   20 |    2000 |      30 |  0.018902005 |        ideal
+Fitness time = 10.395306825637817
+   21 |    2100 |      39 |  0.010974121 |            f
+Fitness time = 10.459348678588867
+   22 |    2200 |      38 |  0.009558253 |            f
+Fitness time = 10.763084411621094
+   23 |    2300 |      39 |  0.007734497 |            f
+Fitness time = 10.483840942382812
+   24 |    2400 |      32 |  0.070242555 |        nadir
+Fitness time = 10.570395708084106
+   25 |    2500 |      35 |  0.010770273 |            f
+Fitness time = 10.54027509689331
+   26 |    2600 |      36 |  0.005321034 |            f
+Fitness time = 10.672598600387573
+   27 |    2700 |      36 |  0.005482940 |            f
+Fitness time = 10.360302448272705
+   28 |    2800 |      41 |  0.004138773 |        ideal
+Fitness time = 10.566099882125854
+   29 |    2900 |      41 |  0.006175785 |            f
+Fitness time = 10.557405710220337
+   30 |    3000 |      39 |  0.037035672 |        nadir
+Fitness time = 10.144188404083252
+   31 |    3100 |      47 |  0.004617524 |            f
+Fitness time = 10.28565001487732
+   32 |    3200 |      47 |  0.053754265 |        nadir
+Fitness time = 10.466142416000366
+   33 |    3300 |      42 |  0.004064696 |            f
+Fitness time = 10.192744493484497
+   34 |    3400 |      52 |  0.168316962 |        nadir
+Fitness time = 10.515775203704834
+   35 |    3500 |      53 |  0.009261122 |        ideal
+Fitness time = 10.43033742904663
+   36 |    3600 |      57 |  0.001879621 |            f
+Fitness time = 10.39699935913086
+   37 |    3700 |      55 |  0.002585675 |            f
+Fitness time = 10.392391204833984
+   38 |    3800 |      51 |  0.002869718 |            f
+Fitness time = 10.763117551803589
+   39 |    3900 |      48 |  0.002298104 |            f
+Fitness time = 10.481664180755615
+   40 |    4000 |      56 |  0.003593632 |            f
+Fitness time = 10.09389877319336
+   41 |    4100 |      51 |  0.002487582 |            f
+Fitness time = 10.26314377784729
+   42 |    4200 |      55 |  0.002944608 |            f
+Fitness time = 10.05288028717041
+   43 |    4300 |      55 |  0.003169119 |            f
+Fitness time = 10.229991436004639
+   44 |    4400 |      52 |  0.007898539 |        ideal
+Fitness time = 10.112411975860596
+   45 |    4500 |      67 |  0.005246309 |            f
+Fitness time = 10.310814619064331
+   46 |    4600 |      64 |  0.000813127 |            f
+Fitness time = 10.246457576751709
+   47 |    4700 |      66 |  0.000636686 |            f
+Fitness time = 10.117796659469604
+   48 |    4800 |      69 |  0.000765254 |            f
+Fitness time = 10.168122053146362
+   49 |    4900 |      68 |  0.001034380 |            f
+Fitness time = 10.437181949615479
+   50 |    5000 |      55 |  0.000555528 |            f
+Fitness time = 9.9404137134552
+   51 |    5100 |      69 |  0.002684259 |            f
+Fitness time = 10.186159133911133
+   52 |    5200 |      71 |  0.000337647 |            f
+Fitness time = 10.135761022567749
+   53 |    5300 |      71 |  0.000544881 |            f
+Fitness time = 9.983012199401855
+   54 |    5400 |      72 |  0.000900497 |            f
+Fitness time = 10.178395509719849
+   55 |    5500 |      72 |  0.000689613 |            f
+Fitness time = 10.123579740524292
+   56 |    5600 |      73 |  0.000704379 |            f
+Fitness time = 10.299709796905518
+   57 |    5700 |      74 |  0.000880211 |            f
+Fitness time = 10.16976547241211
+   58 |    5800 |      71 |  0.000168807 |            f
+Fitness time = 10.582130670547485
+   59 |    5900 |      72 |  0.000687562 |            f
+Fitness time = 10.280694246292114
+   60 |    6000 |      57 |  0.000231857 |            f
+Fitness time = 10.51062822341919
+   61 |    6100 |      73 |  0.005226017 |        ideal
+Fitness time = 10.096141338348389
+   62 |    6200 |      71 |  0.001065208 |            f
+Fitness time = 10.206990242004395
+   63 |    6300 |      72 |  0.000225546 |            f
+Fitness time = 10.19905161857605
+   64 |    6400 |      75 |  0.000535760 |            f
+Fitness time = 10.554506778717041
+   65 |    6500 |      75 |  0.000416413 |            f
+Fitness time = 10.069588661193848
+   66 |    6600 |      75 |  0.000768010 |            f
+Fitness time = 10.163036823272705
+   67 |    6700 |      78 |  0.000926885 |            f
+Fitness time = 10.392202615737915
+   68 |    6800 |      79 |  0.000911981 |            f
+Fitness time = 10.318772077560425
+   69 |    6900 |      79 |  0.000037728 |            f
+Fitness time = 10.374264478683472
+   70 |    7000 |      79 |  0.000327178 |            f
+Fitness time = 10.32848072052002
+   71 |    7100 |      82 |  0.000363559 |            f
+Fitness time = 10.216438293457031
+   72 |    7200 |      83 |  0.000291223 |            f
+Fitness time = 10.356929540634155
+   73 |    7300 |      85 |  0.000289591 |            f
+Fitness time = 10.46129322052002
+   74 |    7400 |      85 |  0.000302977 |            f
+Fitness time = 10.29787540435791
+   75 |    7500 |      86 |  0.000300477 |            f
+Fitness time = 10.466537475585938
+   76 |    7600 |      85 |  0.000289458 |            f
+Fitness time = 10.439491271972656
+   77 |    7700 |      85 |  0.000109551 |            f
+Fitness time = 10.211819410324097
+   78 |    7800 |      86 |  0.000281040 |            f
+Fitness time = 10.310699462890625
+   79 |    7900 |      86 |  0.000233709 |            f
+Fitness time = 10.323331832885742
+   80 |    8000 |      86 |  0.000232590 |            f
+Fitness time = 10.436525821685791
+   81 |    8100 |      85 |  0.000434872 |            f
+Fitness time = 10.50906252861023
+   82 |    8200 |      87 |  0.000321448 |            f
+Fitness time = 10.392877578735352
+   83 |    8300 |      87 |  0.000341659 |            f
+Fitness time = 10.481741189956665
+   84 |    8400 |      86 |  0.00000E+00 |            f
+Fitness time = 10.358436822891235
+   85 |    8500 |      88 |  0.000276954 |            f
+Fitness time = 10.384735107421875
+   86 |    8600 |      87 |  0.000224019 |            f
+Fitness time = 10.510719060897827
+   87 |    8700 |      88 |  0.000465992 |            f
+Fitness time = 10.389321088790894
+   88 |    8800 |      88 |  0.000098984 |            f
+Fitness time = 10.439441204071045
+   89 |    8900 |      88 |  0.000170703 |            f
+Fitness time = 10.245743751525879
+   90 |    9000 |      86 |  0.000259382 |            f
+Fitness time = 10.38997197151184
+   91 |    9100 |      87 |  0.000940032 |            f
+Fitness time = 10.15436053276062
+   92 |    9200 |      86 |  0.000194851 |            f
+Fitness time = 10.306568622589111
+   93 |    9300 |      88 |  0.000410127 |            f
+Fitness time = 9.948410511016846
+   94 |    9400 |      88 |  0.000190364 |            f
+Fitness time = 10.15391230583191
+   95 |    9500 |      88 |  0.000322201 |            f
+Fitness time = 10.200561046600342
+   96 |    9600 |      90 |  0.000480667 |            f
+Fitness time = 10.337860107421875
+   97 |    9700 |      89 |  0.000189823 |            f
+Fitness time = 10.400482416152954
+   98 |    9800 |      88 |  0.000148748 |            f
+Fitness time = 10.355178117752075
+   99 |    9900 |      88 |  0.000135856 |            f
+Fitness time = 10.204335451126099
+  100 |   10000 |      89 |  0.000370841 |            f
+Surrogate search + acc pred time = 50.18400835990906 mins
+Selection complete: Selected 200 indices from 200 possibilities
+Surrogate selection time = 0.00034332275390625 mins
+Lock 23274365779296 acquired on /scratch/bf996/encas/logs/nsganetv2/cifar10_reproducenat_astar/gpu_0.lockpercent_w1_0=0.365
+Setting random seed to 1724
+device=device(type='cuda')
+SGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.009995734055077345
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+Color jitter: None, resize_scale: 0.08, img_size: 256
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+
+Init dataloader seed: 1327720481
+Init dataloader seed: 1327720483
+Init dataloader seed: 1327720485
+Init dataloader seed: 1327720487
+Init dataloader seed: 1327720489
+Init dataloader seed: 1327720491
+Init dataloader seed: 1327720497
+Init dataloader seed: 1327720509
+Init dataloader seed: 1327720479
+Init dataloader seed: 1327720507
+Init dataloader seed: 1327720501
+Init dataloader seed: 1327720505
+Init dataloader seed: 1327720493
+Init dataloader seed: 1327720503
+Init dataloader seed: 1327720495
+Init dataloader seed: 1327720499
+Setting random seed to 1725
+device=device(type='cuda')
+SGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.009991109375723532
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+Color jitter: None, resize_scale: 0.08, img_size: 256
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+
+Init dataloader seed: 2973268479
+Init dataloader seed: 2973268483
+Init dataloader seed: 2973268489
+Init dataloader seed: 2973268493
+Init dataloader seed: 2973268481
+Init dataloader seed: 2973268495
+Init dataloader seed: 2973268473
+Init dataloader seed: 2973268485
+Init dataloader seed: 2973268487
+Init dataloader seed: 2973268499
+Init dataloader seed: 2973268491
+Init dataloader seed: 2973268497
+Init dataloader seed: 2973268501
+Init dataloader seed: 2973268475
+Init dataloader seed: 2973268503
+Init dataloader seed: 2973268477
+Total training time = 19.887309312820435 minutes 
+
+Lock 23274365779296 released on /scratch/bf996/encas/logs/nsganetv2/cifar10_reproducenat_astar/gpu_0.lockSGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.009952372923002892
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+SGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.009931677845730943
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+started _evaluate_model
+Color jitter: None, resize_scale: 0.08, img_size: 256
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+sub_train_loader time = 0.8985226154327393
+Setting BN time = 40.66256070137024
+
+200 validations
+
+Leaving eval loop. Total eval time = 2.741931915283203 minutes 
+
+
+Iter 1: hv = 0.79
+fitting rbf_ensemble: RMSE = 2.2555, Spearman's Rho = 0.8169, Kendall’s Tau = 0.6347
+
+BEGIN: Iteration 3 of 31
+# of val archs in inputs (training samples) is 200, alphabet length (dim) is 22
+Selection complete: Selected 100 indices from 200 possibilities
+In fit_surrogate, reproduce_nat: inputs for fit, targets are: 
+
+actual_inputs_for_fit.shape=(100, 22), targets.shape=(100,)
+Constructing RBF ensemble surrogate model with sample size = 100, ensemble size = 500
+In fit_surrogate, Predictions of acc_predictor: type is <class 'numpy.ndarray'>
+In fit_surrogate, Predictions of acc_predictor: size is (200, 1)
+Setting random seed to 1725
+Fitness time = 23.35712194442749
+=======================================================
+n_gen |  n_eval |  n_nds  |     eps      |  indicator  
+=======================================================
+    1 |     199 |      13 |            - |            -
+Fitness time = 11.985949754714966
+    2 |     299 |      17 |  0.051199060 |        ideal
+Fitness time = 10.873223543167114
+    3 |     399 |      20 |  0.020784893 |            f
+Fitness time = 10.913999319076538
+    4 |     499 |      18 |  0.002928015 |            f
+Fitness time = 10.916414976119995
+    5 |     599 |      21 |  0.014600765 |            f
+Fitness time = 10.912690877914429
+    6 |     699 |      21 |  0.010774760 |            f
+Fitness time = 10.775603771209717
+    7 |     799 |      17 |  0.003412365 |            f
+Fitness time = 10.493976593017578
+    8 |     899 |      18 |  0.010974270 |            f
+Fitness time = 10.61504578590393
+    9 |     999 |      26 |  0.060286102 |        ideal
+Fitness time = 10.407198190689087
+   10 |    1099 |      27 |  0.010988055 |            f
+Fitness time = 10.231797218322754
+   11 |    1199 |      35 |  0.014742077 |            f
+Fitness time = 9.998645305633545
+   12 |    1299 |      30 |  0.055227152 |        nadir
+Fitness time = 10.46367359161377
+   13 |    1399 |      28 |  0.006547057 |            f
+Fitness time = 10.529711484909058
+   14 |    1499 |      31 |  0.007752250 |            f
+Fitness time = 10.498972177505493
+   15 |    1599 |      37 |  0.008927420 |            f
+Fitness time = 10.650278806686401
+   16 |    1699 |      28 |  0.008527601 |            f
+Fitness time = 10.224598407745361
+   17 |    1799 |      32 |  0.005762147 |            f
+Fitness time = 10.387918472290039
+   18 |    1899 |      34 |  0.005749826 |            f
+Fitness time = 10.321702003479004
+   19 |    1999 |      37 |  0.006820283 |            f
+Fitness time = 10.298845529556274
+   20 |    2099 |      35 |  0.003640298 |            f
+Fitness time = 10.292291164398193
+   21 |    2199 |      38 |  0.007449626 |            f
+Fitness time = 10.588817834854126
+   22 |    2299 |      40 |  0.003788282 |            f
+Fitness time = 10.514022827148438
+   23 |    2399 |      41 |  0.004412113 |            f
+Fitness time = 10.560146570205688
+   24 |    2499 |      41 |  0.003779162 |            f
+Fitness time = 10.626666784286499
+   25 |    2599 |      47 |  0.005004854 |            f
+Fitness time = 10.359663963317871
+   26 |    2699 |      42 |  0.002633220 |            f
+Fitness time = 10.403240203857422
+   27 |    2799 |      38 |  0.004136526 |            f
+Fitness time = 10.575428009033203
+   28 |    2899 |      41 |  0.004042429 |            f
+Fitness time = 10.472902536392212
+   29 |    2999 |      45 |  0.004909967 |            f
+Fitness time = 10.534475326538086
+   30 |    3099 |      48 |  0.004700379 |            f
+Fitness time = 10.850099802017212
+   31 |    3199 |      52 |  0.003512781 |            f
+Fitness time = 10.657367944717407
+   32 |    3299 |      52 |  0.002063971 |            f
+Fitness time = 10.803943157196045
+   33 |    3399 |      53 |  0.003180543 |            f
+Fitness time = 10.853122234344482
+   34 |    3499 |      53 |  0.004313896 |            f
+Fitness time = 10.540784358978271
+   35 |    3599 |      54 |  0.003294552 |            f
+Fitness time = 10.75405740737915
+   36 |    3699 |      58 |  0.002380635 |            f
+Fitness time = 10.28286361694336
+   37 |    3799 |      55 |  0.001182362 |            f
+Fitness time = 10.191373586654663
+   38 |    3899 |      52 |  0.004301402 |            f
+Fitness time = 10.480808019638062
+   39 |    3999 |      51 |  0.001908278 |            f
+Fitness time = 10.353771924972534
+   40 |    4099 |      54 |  0.013776334 |        ideal
+Fitness time = 10.386994123458862
+   41 |    4199 |      54 |  0.002903168 |            f
+Fitness time = 10.314080476760864
+   42 |    4299 |      65 |  0.002562915 |            f
+Fitness time = 10.349621057510376
+   43 |    4399 |      68 |  0.000437458 |            f
+Fitness time = 10.021746158599854
+   44 |    4499 |      71 |  0.000727753 |            f
+Fitness time = 10.272176742553711
+   45 |    4599 |      73 |  0.001391392 |            f
+Fitness time = 10.503975868225098
+   46 |    4699 |      72 |  0.000656611 |            f
+Fitness time = 10.773171186447144
+   47 |    4799 |      72 |  0.001083678 |            f
+Fitness time = 10.834856986999512
+   48 |    4899 |      72 |  0.001061069 |            f
+Fitness time = 10.592874765396118
+   49 |    4999 |      73 |  0.001537666 |            f
+Fitness time = 10.40787649154663
+   50 |    5099 |      71 |  0.000391424 |            f
+Fitness time = 10.586933612823486
+   51 |    5199 |      72 |  0.000336062 |            f
+Fitness time = 10.251288414001465
+   52 |    5299 |      72 |  0.000405670 |            f
+Fitness time = 10.301594972610474
+   53 |    5399 |      72 |  0.003678096 |        ideal
+Fitness time = 10.340946674346924
+   54 |    5499 |      73 |  0.000768959 |            f
+Fitness time = 10.483208894729614
+   55 |    5599 |      74 |  0.000312373 |            f
+Fitness time = 10.444549322128296
+   56 |    5699 |      76 |  0.000254997 |            f
+Fitness time = 10.489316463470459
+   57 |    5799 |      81 |  0.000970869 |            f
+Fitness time = 10.761117458343506
+   58 |    5899 |      80 |  0.000417936 |            f
+Fitness time = 10.722935199737549
+   59 |    5999 |      83 |  0.000696343 |            f
+Fitness time = 10.313918828964233
+   60 |    6099 |      82 |  0.000228996 |            f
+Fitness time = 10.556117296218872
+   61 |    6199 |      82 |  0.000550506 |            f
+Fitness time = 10.326120853424072
+   62 |    6299 |      83 |  0.000176736 |            f
+Fitness time = 10.372491836547852
+   63 |    6399 |      73 |  0.110355807 |        nadir
+Fitness time = 10.712253332138062
+   64 |    6499 |      72 |  0.000303496 |            f
+Fitness time = 10.650883436203003
+   65 |    6599 |      73 |  0.000108260 |            f
+Fitness time = 10.575290441513062
+   66 |    6699 |      75 |  0.000483333 |            f
+Fitness time = 10.425791501998901
+   67 |    6799 |      75 |  0.000521620 |            f
+Fitness time = 10.617591619491577
+   68 |    6899 |      77 |  0.000798415 |            f
+Fitness time = 10.62661075592041
+   69 |    6999 |      77 |  0.000039205 |            f
+Fitness time = 10.507857322692871
+   70 |    7099 |      80 |  0.000631759 |            f
+Fitness time = 10.530292749404907
+   71 |    7199 |      80 |  0.000238066 |            f
+Fitness time = 10.655954837799072
+   72 |    7299 |      81 |  0.000543876 |            f
+Fitness time = 10.661738872528076
+   73 |    7399 |      82 |  0.000624897 |            f
+Fitness time = 10.542449474334717
+   74 |    7499 |      82 |  0.000150899 |            f
+Fitness time = 10.40178656578064
+   75 |    7599 |      82 |  0.000191539 |            f
+Fitness time = 10.83442735671997
+   76 |    7699 |      81 |  0.000461280 |            f
+Fitness time = 10.463109731674194
+   77 |    7799 |      80 |  0.100939807 |        nadir
+Fitness time = 10.684094905853271
+   78 |    7899 |      79 |  0.000535599 |            f
+Fitness time = 10.479171514511108
+   79 |    7999 |      80 |  0.000423630 |            f
+Fitness time = 10.455198287963867
+   80 |    8099 |      80 |  0.000581983 |            f
+Fitness time = 10.476877689361572
+   81 |    8199 |      80 |  0.000146171 |            f
+Fitness time = 10.54602599143982
+   82 |    8299 |      80 |  0.001240831 |            f
+Fitness time = 10.39392375946045
+   83 |    8399 |      81 |  0.000255824 |            f
+Fitness time = 10.435540914535522
+   84 |    8499 |      81 |  0.000435265 |            f
+Fitness time = 10.698446273803711
+   85 |    8599 |      81 |  0.000085157 |            f
+Fitness time = 10.517766952514648
+   86 |    8699 |      82 |  0.000168814 |            f
+Fitness time = 10.566596508026123
+   87 |    8799 |      82 |  0.000401980 |            f
+Fitness time = 10.564861297607422
+   88 |    8899 |      81 |  0.000167359 |            f
+Fitness time = 10.306347846984863
+   89 |    8999 |      81 |  0.000251670 |            f
+Fitness time = 10.648793697357178
+   90 |    9099 |      82 |  0.000162158 |            f
+Fitness time = 10.648770332336426
+   91 |    9199 |      83 |  0.000200385 |            f
+Fitness time = 10.807264566421509
+   92 |    9299 |      80 |  0.000730727 |            f
+Fitness time = 10.909374237060547
+   93 |    9399 |      78 |  0.000500313 |            f
+Fitness time = 10.919002771377563
+   94 |    9499 |      78 |  0.000738368 |            f
+Fitness time = 11.042186975479126
+   95 |    9599 |      78 |  0.000039121 |            f
+Fitness time = 10.58265233039856
+   96 |    9699 |      81 |  0.000368439 |            f
+Fitness time = 10.994646310806274
+   97 |    9799 |      81 |  0.000465754 |            f
+Fitness time = 10.977816343307495
+   98 |    9899 |      82 |  0.000124191 |            f
+Fitness time = 11.056001663208008
+   99 |    9999 |      82 |  0.000324208 |            f
+Fitness time = 10.872055530548096
+  100 |   10099 |      80 |  0.006494058 |        ideal
+Surrogate search + acc pred time = 51.08215403556824 mins
+Selection complete: Selected 300 indices from 300 possibilities
+Surrogate selection time = 0.00046539306640625 mins
+Lock 23274365779296 acquired on /scratch/bf996/encas/logs/nsganetv2/cifar10_reproducenat_astar/gpu_0.lockpercent_w1_0=0.3311036789297659
+Setting random seed to 1725
+device=device(type='cuda')
+SGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.009952372923002892
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+Color jitter: None, resize_scale: 0.08, img_size: 256
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+
+Init dataloader seed: 480760187
+Init dataloader seed: 480760197
+Init dataloader seed: 480760195
+Init dataloader seed: 480760201
+Init dataloader seed: 480760207
+Init dataloader seed: 480760209
+Init dataloader seed: 480760203
+Init dataloader seed: 480760213
+Init dataloader seed: 480760199
+Init dataloader seed: 480760185
+Init dataloader seed: 480760215
+Init dataloader seed: 480760193
+Init dataloader seed: 480760205
+Init dataloader seed: 480760211
+Init dataloader seed: 480760191
+Init dataloader seed: 480760189
+Setting random seed to 1726
+device=device(type='cuda')
+SGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.009931677845730943
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+Color jitter: None, resize_scale: 0.08, img_size: 256
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+
+Init dataloader seed: 3732916592
+Init dataloader seed: 3732916596
+Init dataloader seed: 3732916594
+Init dataloader seed: 3732916598
+Init dataloader seed: 3732916600
+Init dataloader seed: 3732916602
+Init dataloader seed: 3732916604
+Init dataloader seed: 3732916614
+Init dataloader seed: 3732916620
+Init dataloader seed: 3732916610
+Init dataloader seed: 3732916606
+Init dataloader seed: 3732916608
+Init dataloader seed: 3732916590
+Init dataloader seed: 3732916618
+Init dataloader seed: 3732916612
+Init dataloader seed: 3732916616
+Total training time = 2.952808380126953 minutes 
+
+Lock 23274365779296 released on /scratch/bf996/encas/logs/nsganetv2/cifar10_reproducenat_astar/gpu_0.lockSGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.00986141604399901
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+SGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.009818413318804545
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+started _evaluate_model
+Color jitter: None, resize_scale: 0.08, img_size: 256
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+sub_train_loader time = 0.955796480178833
+Setting BN time = 42.01900506019592
+
+eval 300 models
+
+Leaving eval loop. Total eval time = 50.051374197006226 minutes 
+
+
+Iter 2: hv = 0.82
+fitting rbf_ensemble: RMSE = 1.1995, Spearman's Rho = 0.9218, Kendall’s Tau = 0.7591
+
+BEGIN: Iteration 4 of 31
+# of val archs in inputs (training samples) is 299, alphabet length (dim) is 22
+Selection complete: Selected 100 indices from 299 possibilities
+In fit_surrogate, reproduce_nat: inputs for fit, targets are: 
+
+actual_inputs_for_fit.shape=(100, 22), targets.shape=(100,)
+Constructing RBF ensemble surrogate model with sample size = 100, ensemble size = 500
+In fit_surrogate, Predictions of acc_predictor: type is <class 'numpy.ndarray'>
+In fit_surrogate, Predictions of acc_predictor: size is (299, 1)
+Setting random seed to 1726
+Fitness time = 33.615246295928955
+=======================================================
+n_gen |  n_eval |  n_nds  |     eps      |  indicator  
+=======================================================
+    1 |     298 |      23 |            - |            -
+Fitness time = 11.463871002197266
+    2 |     398 |      24 |  0.020763397 |            f
+Fitness time = 10.889412641525269
+    3 |     498 |      14 |  0.013958278 |        ideal
+Fitness time = 10.412485361099243
+    4 |     598 |      17 |  0.019266606 |            f
+Fitness time = 10.546902894973755
+    5 |     698 |      19 |  0.014499387 |            f
+Fitness time = 10.238777875900269
+    6 |     798 |      18 |  0.004723144 |            f
+Fitness time = 10.035220384597778
+    7 |     898 |      21 |  0.011782439 |            f
+Fitness time = 10.383896827697754
+    8 |     998 |      24 |  0.012999041 |            f
+Fitness time = 10.469219446182251
+    9 |    1098 |      24 |  0.020225774 |            f
+Fitness time = 10.73139214515686
+   10 |    1198 |      19 |  0.015420518 |            f
+Fitness time = 10.168277740478516
+   11 |    1298 |      16 |  0.012032927 |            f
+Fitness time = 10.063441038131714
+   12 |    1398 |      15 |  0.005707479 |            f
+Fitness time = 10.264117240905762
+   13 |    1498 |      16 |  0.018818819 |            f
+Fitness time = 10.050425052642822
+   14 |    1598 |      27 |  0.069958469 |        ideal
+Fitness time = 10.04799747467041
+   15 |    1698 |      27 |  0.008784501 |            f
+Fitness time = 9.762295484542847
+   16 |    1798 |      26 |  0.022538249 |        ideal
+Fitness time = 10.113656759262085
+   17 |    1898 |      26 |  0.004549244 |            f
+Fitness time = 10.418142557144165
+   18 |    1998 |      34 |  0.123998667 |        nadir
+Fitness time = 10.198390483856201
+   19 |    2098 |      29 |  0.001533848 |            f
+Fitness time = 10.34787392616272
+   20 |    2198 |      33 |  0.006710472 |            f
+Fitness time = 10.283840656280518
+   21 |    2298 |      28 |  0.009326950 |            f
+Fitness time = 10.625003099441528
+   22 |    2398 |      31 |  0.007649137 |            f
+Fitness time = 10.635453462600708
+   23 |    2498 |      34 |  0.004125841 |            f
+Fitness time = 10.205963850021362
+   24 |    2598 |      39 |  0.010355265 |            f
+Fitness time = 10.186975479125977
+   25 |    2698 |      38 |  0.003970383 |            f
+Fitness time = 10.262970685958862
+   26 |    2798 |      38 |  0.012275451 |        ideal
+Fitness time = 10.498384475708008
+   27 |    2898 |      44 |  0.004221474 |            f
+Fitness time = 10.424344539642334
+   28 |    2998 |      44 |  0.003014405 |            f
+Fitness time = 10.380248069763184
+   29 |    3098 |      46 |  0.002984630 |            f
+Fitness time = 10.644480228424072
+   30 |    3198 |      41 |  0.008655370 |        ideal
+Fitness time = 10.640353441238403
+   31 |    3298 |      43 |  0.002746841 |            f
+Fitness time = 10.619187355041504
+   32 |    3398 |      46 |  0.006868157 |            f
+Fitness time = 10.47240662574768
+   33 |    3498 |      47 |  0.003725997 |            f
+Fitness time = 10.665040731430054
+   34 |    3598 |      50 |  0.002207685 |            f
+Fitness time = 10.957773447036743
+   35 |    3698 |      49 |  0.006588948 |        ideal
+Fitness time = 11.010268688201904
+   36 |    3798 |      53 |  0.003267352 |            f
+Fitness time = 10.540759563446045
+   37 |    3898 |      49 |  0.001246401 |            f
+Fitness time = 10.830065727233887
+   38 |    3998 |      56 |  0.053949089 |        nadir
+Fitness time = 10.30380654335022
+   39 |    4098 |      48 |  0.002829788 |            f
+Fitness time = 10.87483811378479
+   40 |    4198 |      52 |  0.003554819 |            f
+Fitness time = 10.732797861099243
+   41 |    4298 |      56 |  0.003421690 |            f
+Fitness time = 10.676904678344727
+   42 |    4398 |      51 |  0.005971589 |        ideal
+Fitness time = 11.019450664520264
+   43 |    4498 |      53 |  0.003665243 |            f
+Fitness time = 10.823594570159912
+   44 |    4598 |      53 |  0.002869864 |            f
+Fitness time = 11.040105104446411
+   45 |    4698 |      51 |  0.005582335 |        ideal
+Fitness time = 10.694957733154297
+   46 |    4798 |      51 |  0.002623454 |            f
+Fitness time = 10.689737319946289
+   47 |    4898 |      51 |  0.002626484 |            f
+Fitness time = 10.890409469604492
+   48 |    4998 |      53 |  0.004589702 |            f
+Fitness time = 10.781318426132202
+   49 |    5098 |      56 |  0.002808641 |            f
+Fitness time = 10.703189849853516
+   50 |    5198 |      55 |  0.002010177 |            f
+Fitness time = 10.726555109024048
+   51 |    5298 |      57 |  0.003337068 |            f
+Fitness time = 10.612812995910645
+   52 |    5398 |      55 |  0.002163251 |            f
+Fitness time = 10.330933570861816
+   53 |    5498 |      56 |  0.002286078 |            f
+Fitness time = 10.522739171981812
+   54 |    5598 |      66 |  0.003582860 |            f
+Fitness time = 10.871143341064453
+   55 |    5698 |      66 |  0.092392760 |        nadir
+Fitness time = 10.676600694656372
+   56 |    5798 |      66 |  0.000680428 |            f
+Fitness time = 10.875357151031494
+   57 |    5898 |      67 |  0.000898052 |            f
+Fitness time = 10.863624572753906
+   58 |    5998 |      66 |  0.000314169 |            f
+Fitness time = 10.639795780181885
+   59 |    6098 |      66 |  0.000452614 |            f
+Fitness time = 10.841158390045166
+   60 |    6198 |      66 |  0.000625735 |            f
+Fitness time = 10.704060077667236
+   61 |    6298 |      65 |  0.000934713 |            f
+Fitness time = 11.085044860839844
+   62 |    6398 |      63 |  0.000698999 |            f
+Fitness time = 10.746198654174805
+   63 |    6498 |      63 |  0.000243320 |            f
+Fitness time = 10.89350962638855
+   64 |    6598 |      58 |  0.001082011 |            f
+Fitness time = 10.58443307876587
+   65 |    6698 |      65 |  0.031416068 |        nadir
+Fitness time = 10.656685829162598
+   66 |    6798 |      65 |  0.000804284 |            f
+Fitness time = 10.93903136253357
+   67 |    6898 |      67 |  0.012440287 |        ideal
+Fitness time = 10.830627202987671
+   68 |    6998 |      67 |  0.000176445 |            f
+Fitness time = 10.62144422531128
+   69 |    7098 |      67 |  0.000097465 |            f
+Fitness time = 10.46495532989502
+   70 |    7198 |      66 |  0.000182251 |            f
+Fitness time = 10.661494493484497
+   71 |    7298 |      66 |  0.000058761 |            f
+Fitness time = 10.906363010406494
+   72 |    7398 |      67 |  0.000498926 |            f
+Fitness time = 11.24934983253479
+   73 |    7498 |      68 |  0.005864818 |        ideal
+Fitness time = 11.463202953338623
+   74 |    7598 |      69 |  0.000339998 |            f
+Fitness time = 11.091499328613281
+   75 |    7698 |      70 |  0.000300675 |            f
+Fitness time = 11.353967905044556
+   76 |    7798 |      67 |  0.011720542 |        ideal
+Fitness time = 11.314374208450317
+   77 |    7898 |      67 |  0.000826408 |            f
+Fitness time = 11.228765964508057
+   78 |    7998 |      69 |  0.000818728 |            f
+Fitness time = 11.326965808868408
+   79 |    8098 |      68 |  0.000589178 |            f
+Fitness time = 11.360586881637573
+   80 |    8198 |      70 |  0.005010107 |        nadir
+Fitness time = 11.279770374298096
+   81 |    8298 |      70 |  0.000039161 |            f
+Fitness time = 11.387531042098999
+   82 |    8398 |      70 |  0.000230690 |            f
+Fitness time = 11.065104722976685
+   83 |    8498 |      70 |  8.62561E-06 |            f
+Fitness time = 11.090566873550415
+   84 |    8598 |      71 |  0.000332600 |            f
+Fitness time = 11.187872886657715
+   85 |    8698 |      72 |  0.000256891 |            f
+Fitness time = 11.203087329864502
+   86 |    8798 |      72 |  0.000176389 |            f
+Fitness time = 11.262261629104614
+   87 |    8898 |      73 |  0.000558230 |            f
+Fitness time = 11.356580018997192
+   88 |    8998 |      72 |  0.000442891 |            f
+Fitness time = 11.442157745361328
+   89 |    9098 |      73 |  0.000594002 |            f
+Fitness time = 10.938421726226807
+   90 |    9198 |      73 |  0.000024654 |            f
+Fitness time = 11.592957496643066
+   91 |    9298 |      73 |  0.000062000 |            f
+Fitness time = 11.493866682052612
+   92 |    9398 |      75 |  0.000748584 |            f
+Fitness time = 11.762226819992065
+   93 |    9498 |      75 |  0.000106060 |            f
+Fitness time = 11.646722316741943
+   94 |    9598 |      67 |  0.000345934 |            f
+Fitness time = 11.72971773147583
+   95 |    9698 |      76 |  0.002023677 |            f
+Fitness time = 11.612529277801514
+   96 |    9798 |      76 |  0.000110845 |            f
+Fitness time = 11.53059983253479
+   97 |    9898 |      77 |  0.000179710 |            f
+Fitness time = 11.57276725769043
+   98 |    9998 |      66 |  0.00000E+00 |            f
+Fitness time = 11.646605253219604
+   99 |   10098 |      78 |  0.002187175 |            f
+Fitness time = 11.598346710205078
+  100 |   10198 |      73 |  0.033024419 |        nadir
+Surrogate search + acc pred time = 25.66493034362793 mins
+Selection complete: Selected 300 indices from 399 possibilities
+Surrogate selection time = 0.013949871063232422 mins
+Lock 23274365779296 acquired on /scratch/bf996/encas/logs/nsganetv2/cifar10_reproducenat_astar/gpu_0.lockpercent_w1_0=0.2909698996655518
+Setting random seed to 1726
+device=device(type='cuda')
+SGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.00986141604399901
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+Color jitter: None, resize_scale: 0.08, img_size: 256
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+
+
+Init dataloader seed: 3833271091
+Init dataloader seed: 3833271099
+Init dataloader seed: 3833271095
+Init dataloader seed: 3833271101
+Init dataloader seed: 3833271089
+Init dataloader seed: 3833271103
+Init dataloader seed: 3833271113
+Init dataloader seed: 3833271115
+Init dataloader seed: 3833271097
+Init dataloader seed: 3833271105
+Init dataloader seed: 3833271093
+Init dataloader seed: 3833271085
+Init dataloader seed: 3833271111
+Init dataloader seed: 3833271107
+Init dataloader seed: 3833271109
+Total training time = 41.16155457496643 minutes 
+
+Lock 23274365779296 released on /scratch/bf996/encas/logs/nsganetv2/cifar10_reproducenat_astar/gpu_0.lockSGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.009724789735613484
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+SGD (
+Parameter Group 0
+    dampening: 0
+    lr: 0.009651302124051025
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 4e-05
+)
+started _evaluate_model
+Color jitter: None, resize_scale: 0.08, img_size: 256
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+sub_train_loader time = 0.9108400344848633
+Setting BN time = 41.77319121360779
+
+300 evals
+
+Leaving eval loop. Total eval time = 36.69761538505554 minutes 
+
+
+Iter 3: hv = 0.83
+fitting rbf_ensemble: RMSE = 0.9783, Spearman's Rho = 0.9692, Kendall’s Tau = 0.8533
+
+BEGIN: Iteration 5 of 31
+number of val archs in inputs (training samples) is 299, alphabet length (dim) is 22
+Selection complete: Selected 100 indices from 299 possibilities
+In fit_surrogate, reproduce_nat: inputs for fit, targets are: 
+
+actual_inputs_for_fit.shape=(100, 22), targets.shape=(100,)
+Constructing RBF ensemble surrogate model with sample size = 100, ensemble size = 500
+Traceback (most recent call last):
+  File "/scratch/bf996/encas/nat_run_many.py", line 128, in execute_run
+    main(algo_run_kwargs)
+  File "/scratch/bf996/encas/nat.py", line 975, in main
+    engine.search()
+  File "/scratch/bf996/encas/nat.py", line 236, in search
+    archive, *_ = self.search_step(archive, it, ref_pt)
+  File "/scratch/bf996/encas/nat.py", line 239, in search_step
+    acc_predictor, pred_for_archive = self.fit_surrogate(archive, self.alphabet, self.alphabet_lb)
+  File "/scratch/bf996/encas/nat.py", line 380, in fit_surrogate
+    predictions = acc_predictor.predict(inputs)
+  File "/scratch/bf996/encas/acc_predictor/rbf_ensemble.py", line 76, in predict
+    self.model_predictions[j] = rbf.predict(this_test_data[feature][np.newaxis, :])[0]
+  File "/scratch/bf996/encas/acc_predictor/rbf.py", line 41, in predict
+    return self.model.predict(test_data)
+  File "/ext3/miniconda3/envs/env_encas/lib/python3.8/site-packages/pySOT/surrogate/rbf.py", line 179, in predict
+    self._fit()
+  File "/ext3/miniconda3/envs/env_encas/lib/python3.8/site-packages/pySOT/surrogate/rbf.py", line 167, in _fit
+    self.c = scplinalg.solve_triangular(a=self.U, b=self.c, lower=False)
+  File "/ext3/miniconda3/envs/env_encas/lib/python3.8/site-packages/scipy/linalg/basic.py", line 356, in solve_triangular
+    raise LinAlgError("singular matrix: resolution failed at diagonal %d" %
+numpy.linalg.LinAlgError: singular matrix: resolution failed at diagonal 2
+
+singular matrix: resolution failed at diagonal 2
+Current time: 
+2022-12-07 18:42:35.098599

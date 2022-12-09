@@ -1,9 +1,11 @@
 from .referencebased_subset_selector import ReferenceBasedSubsetSelector
+from .astar_subset_selector import MHASubsetSelector
 
 # since only 1 subset selector is used in the paper, this level of indirectness is not needed
 # But if I (or someone else) want to add another one later, this would be convenient.
 selector_name_to_class = {
-    'reference': ReferenceBasedSubsetSelector
+    'reference': ReferenceBasedSubsetSelector,
+    'astar': MHASubsetSelector
 }
 
 def create_subset_selector(name, n_to_select, **kwargs):

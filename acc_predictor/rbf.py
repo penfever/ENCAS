@@ -30,7 +30,7 @@ class RBF:
         idx_unique = np.unique(train_data, axis=0, return_index=True)[1]
 
         self.model = RBFInterpolant(dim=train_data.shape[1], kernel=kernel(), tail=tail(train_data.shape[1]),
-                                    lb=self.alphabet_lb, ub=self.alphabet)
+                                    lb=self.alphabet_lb, ub=self.alphabet, eta=1e-4)
 
         for i in range(len(train_data[idx_unique, :])):
             self.model.add_points(train_data[idx_unique, :][i, :], train_label[idx_unique][i])

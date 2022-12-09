@@ -23,20 +23,20 @@ from after_search.symlink_imagenet import create_symlinks
 
 cv2.setNumThreads(0)
 
-
 def create_all_run_kwargs(config_path):
     config_loaded = yaml.safe_load(open(config_path))
 
     experiment_name = config_loaded['experiment_name']
+    print("EXPERIMENT INFO: \n")
     print(experiment_name)
 
     experiment_kwargs = {k: v[0] for k, v in default_kwargs.items()}  # don't need help string
     experiment_kwargs = dict(experiment_kwargs, **config_loaded)
     path_logs = experiment_kwargs['path_logs']  # '/export/scratch3/aleksand/nsganetv2/'
-    Path(path_logs).mkdir(exist_ok=True)
+    Path(path_logs).mkdir(parents=True, exist_ok=True)
     path = os.path.join(path_logs, experiment_name)
     experiment_kwargs['experiment_name'] = experiment_name
-    Path(path).mkdir(exist_ok=True)
+    Path(path).mkdir(parents=True, exist_ok=True)
     copy(config_path, path)
 
     algo_mods_all = config_loaded['algo_mods_all']
@@ -54,7 +54,7 @@ def create_all_run_kwargs(config_path):
 
     for i_algo, algo_kwargs in enumerate(algo_kwargs_all):
         path_algo = os.path.join(path, algo_mods_names[i_algo])
-        Path(path_algo).mkdir(exist_ok=True)
+        Path(path_algo).mkdir(parents=True, exist_ok=True)
         n_runs = algo_kwargs['n_runs']
         for run in range(n_runs):
             algo_run_kwargs = algo_kwargs.copy()  # because NAT pops the values, which breaks all the runs after the first
@@ -131,9 +131,10 @@ def execute_run(algo_run_kwargs):
         print(e)
 
 
-def init_worker(zeroeth_gpu):
-    os.environ["CUDA_VISIBLE_DEVICES"] = f'{zeroeth_gpu}'
-    print('cuda = ', os.environ["CUDA_VISIBLE_DEVICES"])
+def init_worker(worker_gpu):
+    print("Initializing GPU: {}".format(worker_gpu))
+    # os.environ["CUDA_VISIBLE_DEVICES"] = f'{worker_gpu}'
+    # print('cuda = ', os.environ["CUDA_VISIBLE_DEVICES"])
 
 
 def run_kwargs_many(experiment_kwargs, algo_run_kwargs_all):
@@ -147,7 +148,7 @@ def run_kwargs_many(experiment_kwargs, algo_run_kwargs_all):
         futures = [executor.submit(execute_run, kwargs) for kwargs in algo_run_kwargs_all]
         for f in futures:
             f.result()  # wait on everything
-
+    print("Current time: ")
     print(datetime.datetime.now())
 
 
@@ -158,7 +159,14 @@ def store(store_kwargs):
                                           target_runs=store_kwargs['target_runs'])
 
 if __name__ == '__main__':
-    torch.multiprocessing.set_start_method('spawn')
+    if torch.cuda.is_available():
+        # This enables tf32 on Ampere GPUs which is only 8% slower than
+        # float16 and almost as accurate as float32
+        # This was a default in pytorch until 1.12
+        torch.backends.cuda.matmul.allow_tf32 = True
+        torch.backends.cudnn.benchmark = True
+        torch.backends.cudnn.deterministic = False
+    
     p = argparse.ArgumentParser()
     p.add_argument(f'--config', default='configs_nat/cifar100_q0_ofa10_sep_DEBUG.yml', type=str)
     p.add_argument(f'--continue', default=False, action='store_true')
@@ -167,10 +175,22 @@ if __name__ == '__main__':
     config_path = cfgs['config']
 
     # 1. run NAT
+    
+    # get config
     if not cfgs['continue']:
         experiment_kwargs, algo_run_kwargs_all = create_all_run_kwargs(config_path)
     else:
         experiment_kwargs, algo_run_kwargs_all = create_all_run_continue_kwargs(config_path)
+
+    torch.multiprocessing.set_start_method('spawn')
+    devices = os.environ["CUDA_VISIBLE_DEVICES"].split(",")
+    experiment_kwargs["zeroeth_gpu"] = devices[0]
+    experiment_kwargs["gpu"] = len(devices)-1
+    experiment_kwargs["n_gpus"] = len(devices)
+    print("Distributed configuration: ")
+    print("zeroeth gpu, gpu, n_gpus")
+    print(experiment_kwargs["zeroeth_gpu"], experiment_kwargs["gpu"], experiment_kwargs["n_gpus"])
+
     run_kwargs_many(experiment_kwargs, algo_run_kwargs_all)
 
     # 2 (optional). do SWA, store subnetwork outputs, compare validation & test
@@ -180,7 +200,6 @@ if __name__ == '__main__':
     max_iter = experiment_kwargs['iterations']
     if_store = experiment_kwargs['if_store']
     dataset = experiment_kwargs['dataset']
-    os.environ["CUDA_VISIBLE_DEVICES"] = f'{experiment_kwargs["zeroeth_gpu"]}'
     swa = experiment_kwargs.get('post_swa', None)
     if len(algo_run_kwargs_all) > 0:  # == 0 can occur with 'continue'
         target_runs = [int(x['experiment_name'][-1]) for x in algo_run_kwargs_all]

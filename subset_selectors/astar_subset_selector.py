@@ -127,7 +127,7 @@ class MHASurvival():
             for j in range(len(objs_to_examine)):
                 d_obj = []
                 if j in until_last_front_list:
-                    dists.append(np.inf)
+                    dists.append(1e9)
                     continue
                 for i in range(len(until_last_front)):
                     # print("ulf, objs")
@@ -135,11 +135,14 @@ class MHASurvival():
                     d_obj.append(np.dot(objs_to_examine[until_last_front[i]], objs_to_examine[j]))
                 # maximize distance between selected points (for a particular frontier, we seek diversity)
                 d = np.max(d_obj)
-                # minimize distance between each point and some edge on the frontier
+                # minimize distance between selected points and frontier points  
+                # d = np.min(d_obj)
+                # minimize distance between each point and some edge on the frontier, constrained by d
                 h = np.min((self.min_line_distance(objs_to_examine[j], self.tups), d))
+                # h = (self.min_line_distance(objs_to_examine[j], self.tups))
                 # print("Heuristic distance is {}".format(h))
                 dists.append(d + h)
-            # print("dists is {}".format(dists))
+                # dists.append([d, h])
             dists = np.array(dists)
             survivors = np.concatenate((until_last_front, dists.argsort()[:n_remaining]))
             # print("Survivors are {}".format(survivors))

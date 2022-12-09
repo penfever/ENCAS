@@ -477,14 +477,14 @@ def combine_runs_make_image(experiment_path, algo_name_to_seed_to_image_path, da
     grid_im = images_list_to_grid_image(ims, if_draw_grid=True, n_rows=len(algo_name_to_seed_to_image_path))
     grid_im.save(os.path.join(experiment_path, out_img_name_lambda(dataset_type)))
 
-
+#TODO: solve plotting without depending on conditional pathing
 def compare_val_and_test(experiment_name, dataset_type='test', **kwargs):
     dataset_postfix = kwargs.get('dataset_postfix', '')
-    utils.execute_func_for_all_runs_and_combine(experiment_name, eval_cumulative_pareto_front_single_run,
-                                                func_combine=combine_runs_make_image,
-                                                dataset_type=dataset_type,
-                                                out_img_name_lambda=lambda dataset_type: f'grid_best_pareto_val_and_{dataset_type}{dataset_postfix}.png',
-                                                **kwargs)
+    # utils.execute_func_for_all_runs_and_combine(experiment_name, eval_cumulative_pareto_front_single_run,
+    #                                             func_combine=combine_runs_make_image,
+    #                                             dataset_type=dataset_type,
+    #                                             out_img_name_lambda=lambda dataset_type: f'grid_best_pareto_val_and_{dataset_type}{dataset_postfix}.png',
+    #                                             **kwargs)
 
 
 def read_cumulative_pareto_front_metrics_single_run(experiment_path, dataset_type='test', **kwargs):

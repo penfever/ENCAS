@@ -22,7 +22,7 @@ class MoGomeaWrapperEnsembleClassification:
 
         self.n_evals = kwargs['n_evals']
         # gomea_exe_path = '/export/scratch3/aleksand/MO_GOMEA/exes/MO_GOMEA_default_ndinit_lb_lessoutput_intsolution_dontcountcache_usepythonpath'
-        # gomea_exe_path = '/home/chebykin/MO_GOMEA/exes/MO_GOMEA_default_ndinit_lb_lessoutput_intsolution_dontcountcache_usepythonpath'
+        # gomea_exe_path = '/scratch/bf996/MO_GOMEA/exes/MO_GOMEA_default_ndinit_lb_lessoutput_intsolution_dontcountcache_usepythonpath'
         gomea_exe_path = kwargs['gomea_exe_path']
         workdir_mo_gomea = kwargs['run_path']
 

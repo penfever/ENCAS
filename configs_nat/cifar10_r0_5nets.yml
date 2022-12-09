@@ -11,7 +11,7 @@ n_gpus: 2
 n_iter: 300
 n_surrogate_evals: 10000
 n_workers: 8
-path_logs: /scratch/bf996/encas/nsganetv2/logs/
+path_logs: /scratch/bf996/encas/logs/
 predictor: rbf_ensemble_per_ensemble_member_cascade_combo
 random_seed: 1723
 seed_offset: 0
@@ -50,7 +50,7 @@ sample_configs_to_train: false
 init_with_nd_front: false
 if_debug_run: false
 if_create_unique_gpu_lock: false
-gomea_exe: /home/chebykin/MO_GOMEA/exes/MO_GOMEA_default_ndinit_lb_lessoutput_intsolution_dontcountcache_usepythonpath
+gomea_exe: /scratch/bf996/MO_GOMEA/exes/MO_GOMEA_default_ndinit_lb_lessoutput_intsolution_dontcountcache_usepythonpath
 if_single_gpu_mode: true
 store_checkpoint_freq: 1
 use_gradient_checkpointing: false
