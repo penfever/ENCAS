@@ -54,4 +54,4 @@ if_store: false
 git_hash: 827ef869ab2e9b1c68b2e26d5ebaa0a3200675d3
 algo_mods_all:
   - search_algo: nsga3
-    subset_selector: reference
+    subset_selector: astar

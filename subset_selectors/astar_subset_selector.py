@@ -72,7 +72,8 @@ class MHASurvival():
         self.worst_point = np.max(np.vstack((self.worst_point, objs)), axis=0)
 
         # Define the Pareto frontier boundary as the set of line segments joining the ideal point to the worst point along each dimension
-        self.frontier_arc = [self.ideal_point] + [np.hstack((self.worst_point[:i], self.ideal_point[i], self.worst_point[i+1:])) for i in range(len(self.worst_point))]
+        self.frontier_arc = [self.ideal_point] + [np.hstack((self.ideal_point[:i], self.worst_point[i], self.ideal_point[i+1:])) for i in range(len(self.ideal_point))]
+        # self.frontier_arc = [self.ideal_point] + [np.hstack((self.worst_point[:i], self.ideal_point[i], self.worst_point[i+1:])) for i in range(len(self.worst_point))]
         self.tups =  [(self.frontier_arc[0], self.frontier_arc[i]) for i in range(1, len(self.frontier_arc))]
 
         # calculate the fronts of the population
@@ -120,29 +121,32 @@ class MHASurvival():
             if len(fronts) == 1:
                 until_last_front = np.argmin(objs_to_examine, axis=0) #Assuming minimization objective
             else:
-                until_last_front = np.concatenate(fronts[:-1])
+                until_last_front = np.concatenate(fronts[:-1], objs[non_dominated, :])
             until_last_front = np.unique(until_last_front)
             n_remaining = n_survive - len(until_last_front)
             until_last_front_list = until_last_front.tolist()
 
             dists = []
             for j in range(len(objs_to_examine)):
+                
+                # minimize distance between each point and some edge on the frontier, constrained by d
+                d = np.dot(self.ideal_point, objs_to_examine[j])
+
                 d_obj = []
                 if j in until_last_front_list:
                     dists.append([self.BIG_NUMBER, self.BIG_NUMBER])
                     continue
-                # for i in range(len(until_last_front)):
-                #     # print("ulf, objs")
-                #     # print(objs_to_examine[until_last_front[i]], objs_to_examine[j])
-                #     d_obj.append(np.dot(objs_to_examine[until_last_front[i]], objs_to_examine[j]))
+                for i in range(len(until_last_front)):
+                    # print("ulf, objs")
+                    # print(objs_to_examine[until_last_front[i]], objs_to_examine[j])
+                    d_obj.append(np.dot(objs_to_examine[until_last_front[i]], objs_to_examine[j]))
                 # maximize distance between selected points (for a particular frontier, we seek diversity)
-                # d = np.nan_to_num(np.max(d_obj))
+                h = np.nan_to_num(np.max(d_obj))
                 # minimize distance between selected points and frontier points
-                d = np.nan_to_num(np.dot(self.ideal_point, objs_to_examine[j]))
+                # d = np.nan_to_num(np.dot(self.ideal_point, objs_to_examine[j]))
                 # d = np.nan_to_num(np.min(d_obj))
-                # minimize distance between each point and some edge on the frontier, constrained by d
-                # h = np.nan_to_num(np.min((self.min_line_distance(objs_to_examine[j], self.tups), d)))
-                h = np.nan_to_num((self.min_line_distance(objs_to_examine[j], self.tups)))
+                 # h = np.nan_to_num(np.min((self.min_line_distance(objs_to_examine[j], self.tups), d)))
+                # h = np.nan_to_num((self.min_line_distance(objs_to_examine[j], self.tups)))
                 # print("Heuristic distance is {}".format(h))
                 # dists.append(d + h)
                 dists.append([d, h])
