@@ -28,9 +28,9 @@ ensemble_ss_names:
 search_space: reproduce_nat
 experiment_name: cifar100_reproducenat
 train_continuous: true
-trn_batch_size: 256
+trn_batch_size: 192
 use_diversity_objective: false
-vld_batch_size: 256
+vld_batch_size: 192
 vld_size: 10000
 cutout_size: 56
 n_runs: 1

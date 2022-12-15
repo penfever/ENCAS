@@ -121,7 +121,7 @@ class MHASurvival():
             if len(fronts) == 1:
                 until_last_front = np.argmin(objs_to_examine, axis=0) #Assuming minimization objective
             else:
-                until_last_front = np.concatenate(fronts[:-1], objs[non_dominated, :])
+                until_last_front = np.concatenate(fronts[:-1])
             until_last_front = np.unique(until_last_front)
             n_remaining = n_survive - len(until_last_front)
             until_last_front_list = until_last_front.tolist()
@@ -129,8 +129,8 @@ class MHASurvival():
             dists = []
             for j in range(len(objs_to_examine)):
                 
-                # minimize distance between each point and some edge on the frontier, constrained by d
-                d = np.dot(self.ideal_point, objs_to_examine[j])
+                # minimize l_p distance between each point and the ideal point, where p is the number of objectives
+                d = np.linalg.norm(objs_to_examine[j] - self.ideal_point, n_total)
 
                 d_obj = []
                 if j in until_last_front_list:
