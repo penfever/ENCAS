@@ -42,22 +42,7 @@ class MHASurvival():
         self.ideal_point = np.full(objs, np.inf)
         self.worst_point = np.full(objs, -np.inf)
         self.BIG_NUMBER = 1e9
-
-    def min_line_distance(self, P, tups):
-        d = []
-        for i in range(len(tups)):
-          pa = P - tups[i][0]
-          ba = np.array(tups[i][1]) - np.array(tups[i][0])
-          # print("pa, ba are {} {}".format(pa, ba))
-          # print("dots")
-          # print(np.dot(pa, ba), np.dot(ba, ba))
-          tt = np.dot(pa, ba)/np.dot(ba, ba)
-          # print("tt is")
-          # print(tt)
-          # sum up the squares of all N elements (instead of just the 3), and take the sqrt() of the result
-          dd = np.linalg.norm((pa - tt) * ba)
-          d.append(dd)
-        return np.min(d)
+        self.alpha = 1
 
     def _do(self, problem, objs, n_survive, D=None, **kwargs):
         #Number of archs to examine
@@ -73,7 +58,6 @@ class MHASurvival():
 
         # Define the Pareto frontier boundary as the set of line segments joining the ideal point to the worst point along each dimension
         self.frontier_arc = [self.ideal_point] + [np.hstack((self.ideal_point[:i], self.worst_point[i], self.ideal_point[i+1:])) for i in range(len(self.ideal_point))]
-        # self.frontier_arc = [self.ideal_point] + [np.hstack((self.worst_point[:i], self.ideal_point[i], self.worst_point[i+1:])) for i in range(len(self.worst_point))]
         self.tups =  [(self.frontier_arc[0], self.frontier_arc[i]) for i in range(1, len(self.frontier_arc))]
 
         # calculate the fronts of the population
@@ -139,7 +123,7 @@ class MHASurvival():
                 for i in range(len(until_last_front)):
                     # print("ulf, objs")
                     # print(objs_to_examine[until_last_front[i]], objs_to_examine[j])
-                    d_obj.append(np.dot(objs_to_examine[until_last_front[i]], objs_to_examine[j]))
+                    d_obj.append(np.linalg.norm(objs_to_examine[until_last_front[i]] - objs_to_examine[j], n_total))
                 # maximize distance between selected points (for a particular frontier, we seek diversity)
                 h = np.nan_to_num(np.max(d_obj))
                 # minimize distance between selected points and frontier points
@@ -156,7 +140,7 @@ class MHASurvival():
             d_arr = np.array([d[0] for d in dists])
             # print(len(dists), len(d_arr))
             h_arr = np.array([d[1] for d in dists])
-            dists = (d_arr / d_arr.max(axis=0)) + (h_arr / h_arr.max(axis=0))
+            dists = (d_arr / d_arr.max(axis=0)) + (h_arr / (self.alpha * h_arr.max(axis=0)))
             survivors = np.concatenate((until_last_front, dists.argsort()[:n_remaining]))
             # print("Survivors are {}".format(survivors))
             # Get euclidean distances from each point in objs_to_examine to the points already in the set
