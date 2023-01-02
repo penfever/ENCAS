@@ -260,11 +260,11 @@ class CIFAR10DataProvider(CIFARBaseDataProvider):
         return dataset
     
     def test_dataset(self, _transforms):
-    #     dataset = torchvision.datasets.CIFAR10(root=self.valid_path, train=False,
-    #                                            download=True, transform=_transforms)
-    #     return dataset
+        dataset = torchvision.datasets.CIFAR10(root=self.valid_path, train=False,
+                                               download=True, transform=_transforms)
+        return dataset
 
-    # def shift_dataset(self, _transforms):
+    def shift_dataset(self, _transforms):
         dataset = torchvision.datasets.ImageFolder(root="/scratch/bf996/datasets/cifar_10_1", transform=_transforms)
 
         return dataset
