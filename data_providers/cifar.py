@@ -5,6 +5,7 @@ import numpy as np
 import torchvision
 import torch.utils.data
 import torchvision.transforms as transforms
+import tensorflow_datasets as tfds
 
 from ofa.imagenet_classification.data_providers.imagenet import DataProvider
 from timm.data import rand_augment_transform
@@ -33,7 +34,8 @@ class CIFARBaseDataProvider(DataProvider):
         self.if_flip = kwargs.get('if_flip', True)
         self.if_center_crop = kwargs.get('if_center_crop', True)
         self.if_cutmix = kwargs.get('if_cutmix', False)
-
+        self.train_batch_size = train_batch_size
+        self.test_batch_size = test_batch_size
         self._valid_transform_dict = {}
         self._train_transform_dict = {}
 
@@ -260,9 +262,13 @@ class CIFAR10DataProvider(CIFARBaseDataProvider):
         return dataset
     
     def test_dataset(self, _transforms):
-        dataset = torchvision.datasets.CIFAR10(root=self.valid_path, train=False,
-                                               download=True, transform=_transforms)
-        return dataset
+    #     dataset = torchvision.datasets.CIFAR10(root=self.valid_path, train=False,
+    #                                            download=True, transform=_transforms)
+    #     return dataset
+    
+    # def cifar10_1_dataset(self, _transforms):
+        dataset = tfds.load('cifar10_1/v6', split='test')
+        return tfds.as_numpy(dataset.batch(self.test_batch_size))
 
 
 class CIFAR100DataProvider(CIFARBaseDataProvider):

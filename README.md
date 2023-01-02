@@ -69,6 +69,7 @@ Then, run:
 ```
 pip install git+https://github.com/AwesomeLemon/once-for-all
 pip install git+https://github.com/AwesomeLemon/pySOT
+pip install tensorflow-datasets wrapt
 ```
 
 (these are my forks of those repos with a couple of minor bugs fixed)

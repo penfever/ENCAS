@@ -3,9 +3,6 @@
 singularity \
   exec --nv \
   --overlay /scratch/bf996/singularity_containers/encas_env.ext3:ro \
-  --overlay /scratch/bf996/datasets/in100.sqf:ro \
-  --overlay /scratch/bf996/datasets/laion100.sqf:ro \
-  --overlay /scratch/bf996/datasets/openimages100.sqf:ro \
   --overlay /vast/work/public/ml-datasets/bf996/imagenet-r.sqf:ro \
   --overlay /vast/work/public/ml-datasets/bf996/imagenet-a.sqf:ro \
   --overlay /vast/work/public/ml-datasets/bf996/imagenet-sketch.sqf:ro \
@@ -63,7 +60,15 @@ python data_utils/store_labels.py
 
 ## reproduce nat
 
-python nat_run_many.py --config configs_nat/cifar10_testrun.yml
+python nat_run_many.py --config configs_nat/cifar10_reproducenat.yml
+
+python nat_run_many.py --config configs_nat/cifar100_reproducenat.yml
+
+### astar
+
+python nat_run_many.py --config configs_nat/cifar10_reproducenat_astar.yml
+
+python nat_run_many.py --config configs_nat/cifar100_reproducenat_astar.yml
 
 ## params
 

@@ -220,6 +220,7 @@ class NAT:
             yaml.dump(kwargs_copy, f)
 
     def search(self):
+        print("Entering NAT search \n")
         worst_top1_err, worst_flops = 40, 4000
         ref_pt = np.array([worst_top1_err, worst_flops])
 
@@ -313,6 +314,7 @@ class NAT:
             first_iteration = 1
         return archive, first_iteration
 
+    #TODO: surrogate metrics are computed here
     def fit_surrogate(self, archive, alphabet, alphabet_lb):
         if 'rbf_ensemble_per_ensemble_member' not in self.predictor:
             inputs = np.array([self.search_space.encode(x[0]) for x in archive])
@@ -378,8 +380,8 @@ class NAT:
             inputs = {'for_acc': inputs, 'for_flops': inputs_for_flops}
         # to calculate predictor correlation:
         predictions = acc_predictor.predict(inputs)
-        print("In fit_surrogate, Predictions of acc_predictor: type is {}".format(type(predictions)))
-        print("In fit_surrogate, Predictions of acc_predictor: size is {}".format(predictions.shape))
+        # print("In fit_surrogate, Predictions of acc_predictor: type is {}".format(type(predictions)))
+        # print("In fit_surrogate, Predictions of acc_predictor: size is {}".format(predictions.shape))
         return acc_predictor, predictions
 
     def surrogate_search(self, archive, predictor, it=0):
@@ -473,6 +475,8 @@ class NAT:
                            self.train_criterion, self.get_scalar_from_accuracy, actual_logs_path,
                            self.supernet_paths[i], lambda_select_archs_per_engine[i], percent_train_per_engine[i],
                            self.store_checkpoint_freq, self.sec_obj, self.if_amp), f)
+            print("Entering train supernetwork stateless \n")
+            #NAT._train_one_supernetwork_stateless(dump_path_train1)
             future = thread_pool.submit(NAT._train_one_supernetwork_stateless, dump_path_train1)
             future.result()
 
@@ -482,16 +486,19 @@ class NAT:
 
     @staticmethod
     def _train_one_supernetwork_stateless(args_dump_path):
+        print("in train_supernetwork_stateless \n")
         with open(args_dump_path, 'rb') as f:
             archs, it, number_to_add_to_i, n_epochs, if_warmup, create_engine_lambda, random_seed, run_config_lambda, \
             if_sample_configs_to_train, search_space, dataset_name, device, train_criterion, \
             get_scalar_from_accuracy, path_logs, supernet_path, lambda_filter_archs, percent_steps_to_take, \
             store_checkpoint_freq, sec_obj, if_amp \
                 = dill.load(f)
+        print("set seed \n")
         set_seed(random_seed + it) # need to keep changing the seed, otherwise all the epochs use the same random values
+        print("before run_config \n")
         run_config = run_config_lambda()
         engine, optimizer = create_engine_lambda(supernet_path, run_config, device=device)
-
+        print("before n_batches \n")
         n_batches = len(run_config.train_loader)
         if n_epochs is None:
             n_epochs = run_config.n_epochs
@@ -505,7 +512,7 @@ class NAT:
             sample_decoded = [search_space.decode(c) for c in sample.T]
         else:
             archs = [arch for arch in archs if lambda_filter_archs(arch)]
-
+        print("before all_resolutions \n")
         all_resolutions = [arch['r'] for arch in archs]
         run_config.data_provider.collator_train.set_resolutions(all_resolutions)
 
@@ -525,7 +532,7 @@ class NAT:
             losses = AverageMeter()
             metric_dict = defaultdict(lambda: AverageMeter())
             data_time = AverageMeter()
-
+            print("Entering training loop \n")
             with tqdm(total=n_batches,
                       desc='{} Train #{}'.format(run_config.dataset, epoch + number_to_add_to_i), ncols=175) as t:
                 end = time.time()
@@ -665,6 +672,7 @@ class NAT:
             to_return += (perf_and_flops_per_subnet_all,)
         return to_return
 
+    #TODO: actual computation of metrics on trained models is happening here, in this function; modify as needed
     @staticmethod
     def _evaluate_model(device, val_criterion,
                         get_scalar_from_accuracy, sec_obj, search_space_ensemble, get_engines,

@@ -7,10 +7,10 @@ n_classes: 10
 n_doe: 25
 n_epochs: 1
 n_warmup_epochs: 0
-n_gpus: 2
+n_gpus: 1
 n_iter: 25
 n_surrogate_evals: 10000
-n_workers: 8
+n_workers: 4
 path_logs: /scratch/bf996/encas/logs/
 predictor: rbf_ensemble
 random_seed: 1723
@@ -28,9 +28,9 @@ ensemble_ss_names:
 search_space: reproduce_nat
 experiment_name: cifar10_testrun
 train_continuous: true
-trn_batch_size: 256
+trn_batch_size: 96
 use_diversity_objective: false
-vld_batch_size: 256
+vld_batch_size: 96
 vld_size: 10000
 cutout_size: 56
 n_runs: 1
@@ -38,7 +38,7 @@ dont_check_duplicates: true
 add_archive_to_candidates: true
 sample_configs_to_train: true
 init_with_nd_front: false
-if_debug_run: false
+if_debug_run: true
 if_create_unique_gpu_lock: false
 gomea_exe: /scratch/bf996/MO-GOMEA-for-ENCAS/cmake-build-release-remote/MO_GOMEA
 if_single_gpu_mode: true

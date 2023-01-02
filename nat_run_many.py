@@ -14,6 +14,7 @@ from shutil import copy
 import traceback
 from concurrent.futures import ThreadPoolExecutor
 import cv2
+import tensorflow as tf
 
 from plot_results.plotting_functions import compare_val_and_test
 from after_search.average_weights import swa_for_whole_experiment
@@ -144,7 +145,6 @@ def run_kwargs_many(experiment_kwargs, algo_run_kwargs_all):
         executor_class = ThreadPoolExecutor  # it's easier to debug with threads
     with executor_class(max_workers=experiment_kwargs['n_gpus'], initializer=init_worker,
                         initargs=(zeroeth_gpu,)) as executor:
-        print(algo_run_kwargs_all)
         futures = [executor.submit(execute_run, kwargs) for kwargs in algo_run_kwargs_all]
         for f in futures:
             f.result()  # wait on everything
@@ -159,6 +159,8 @@ def store(store_kwargs):
                                           target_runs=store_kwargs['target_runs'])
 
 if __name__ == '__main__':
+    tf.config.set_visible_devices([], 'GPU')
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
     if torch.cuda.is_available():
         # This enables tf32 on Ampere GPUs which is only 8% slower than
         # float16 and almost as accurate as float32
@@ -192,7 +194,7 @@ if __name__ == '__main__':
     print(experiment_kwargs["zeroeth_gpu"], experiment_kwargs["gpu"], experiment_kwargs["n_gpus"])
 
     run_kwargs_many(experiment_kwargs, algo_run_kwargs_all)
-
+    print("NAT is over, begin SWA")
     # 2 (optional). do SWA, store subnetwork outputs, compare validation & test
     plt.rcParams.update({'font.size': 14})
     plt.rcParams['axes.grid'] = True
