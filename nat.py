@@ -717,8 +717,13 @@ class NAT:
 
         if if_cascade:
             n_not_predicted_per_stage = [0 for _ in range(len(subnets) - 1)]
-
+        
         with torch.no_grad(), torch.cuda.amp.autocast():
+            print("iterating over shift loader \n")
+            for i, (images, labels, *other_stuff) in enumerate(run_config.shift_loader):
+                continue
+            print("Done. Entering valid loader \n")
+            #TODO: abstract eval loop into a new function, call it for all val and shift datasets
             with tqdm(total=len(run_config.valid_loader),
                       desc='{} Val #{}'.format(run_config.dataset, i_config + number_to_add_to_i),
                       ncols=200) as t:

@@ -17,6 +17,12 @@ class RunConfigMy(RunConfig):
     def copy(self):
         return RunConfigMy(**self.config)
 
+    """ shift datasets """
+    
+    @property
+    def shift_loader(self):
+        return self.data_provider.shift
+
     """ learning rate """
 
     def adjust_learning_rate(self, optimizer, epoch, batch=0, nBatch=None, epoch_cumulative=None,

@@ -59,8 +59,10 @@ class CIFARBaseDataProvider(DataProvider):
         if not isinstance(valid_size, int):
             assert isinstance(valid_size, float) and 0 < valid_size < 1
             valid_size = int(n_datapoints * valid_size)
-
+        
+        #TODO: implement alternate sizes for shift datasets
         self.valid_dataset_actual = self.train_dataset(valid_transforms)
+        self.shift_dataset_actual = self.shift_dataset(valid_transforms)
         train_indexes, valid_indexes = self.random_sample_valid_set(n_datapoints, valid_size)
 
         train_sampler = torch.utils.data.sampler.SubsetRandomSampler(train_indexes)
@@ -76,7 +78,10 @@ class CIFARBaseDataProvider(DataProvider):
             self.valid_dataset_actual, batch_size=test_batch_size, num_workers=n_worker, pin_memory=True,
             prefetch_factor=1, persistent_workers=True, collate_fn=self.collator_val
         )
-
+        self.shift = torch.utils.data.DataLoader(
+            self.shift_dataset_actual, batch_size=test_batch_size, num_workers=n_worker, pin_memory=True,
+            prefetch_factor=1, persistent_workers=True, collate_fn=self.collator_val
+        )
         test_dataset = self.test_dataset(valid_transforms)
         self.test = torch.utils.data.DataLoader(
             test_dataset, batch_size=test_batch_size, shuffle=False, num_workers=n_worker, pin_memory=True,

@@ -136,7 +136,6 @@ def init_worker(worker_gpu):
     # os.environ["CUDA_VISIBLE_DEVICES"] = f'{worker_gpu}'
     # print('cuda = ', os.environ["CUDA_VISIBLE_DEVICES"])
 
-
 def run_kwargs_many(experiment_kwargs, algo_run_kwargs_all):
     zeroeth_gpu = experiment_kwargs['zeroeth_gpu']
     executor_class = ProcessPoolExecutor

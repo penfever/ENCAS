@@ -31,7 +31,7 @@ train_continuous: true
 trn_batch_size: 64
 use_diversity_objective: false
 vld_batch_size: 64
-vld_size: 2000
+vld_size: 10000
 cutout_size: 56
 n_runs: 1
 dont_check_duplicates: true
